@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChopFast — Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --yellow:#FFBE00; --green:#00866A; --green-dk:#006652;
+      --dark:#1A1A1A; --white:#fff; --gray:#F4F6F4;
+      --gray2:#E8EDE8; --text:#2D2D2D; --muted:#6B7280;
+      --radius:14px; --radius-lg:28px;
+    }
+    body { font-family:'DM Sans',sans-serif; color:var(--text); background:var(--gray); }
+
+    nav {
+      position:sticky; top:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5%; height:68px;
+      background:rgba(255,255,255,.97); backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(0,0,0,.07);
+    }
+    .nav-logo { font-family:'Sora',sans-serif; font-weight:800; font-size:1.5rem;
+      color:var(--dark); display:flex; align-items:center; gap:6px; text-decoration:none; }
+    .nav-logo span { color:var(--yellow); }
+    .nav-back { background:none; border:none; font-size:1rem; cursor:pointer;
+      color:var(--green); font-weight:600; font-family:'DM Sans',sans-serif;
+      display:flex; align-items:center; gap:6px; }
+    .nav-cta { display:flex; gap:.75rem; align-items:center; }
+    .btn-icon { background:none; border:none; font-size:1.4rem; cursor:pointer; position:relative; }
+    .cart-badge {
+      position:absolute; top:-4px; right:-6px;
+      width:18px; height:18px; border-radius:50%;
+      background:var(--green); color:#fff;
+      font-size:.65rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* Hero */
+    .r-hero {
+      height:280px; width:100%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:9rem; position:relative;
+    }
+    .r-hero-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.55));
+    }
+    .r-hero-info {
+      position:absolute; bottom:28px; left:5%;
+      color:#fff; z-index:2;
+    }
+    .r-hero-info h1 {
+      font-family:'Sora',sans-serif; font-size:2rem; font-weight:800;
+      text-shadow:0 2px 8px rgba(0,0,0,.4);
+    }
+    .r-hero-info .badges { display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
+    .badge {
+      background:rgba(255,255,255,.2); backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.3); color:#fff;
+      padding:5px 12px; border-radius:20px; font-size:.8rem; font-weight:600;
+    }
+    .badge.green { background:var(--green); border-color:var(--green); }
+
+    /* Layout */
+    .detail-layout { display:flex; gap:0; max-width:1300px; margin:0 auto; }
+
+    /* Menu sections */
+    .menu-area { flex:1; padding:28px; }
+    .category-nav {
+      display:flex; gap:10px; overflow-x:auto;
+      padding-bottom:4px; margin-bottom:24px;
+    }
+    .cat-btn {
+      white-space:nowrap; padding:8px 18px;
+      border-radius:50px; border:1.5px solid var(--gray2);
+      background:#fff; font-size:.85rem; font-weight:600;
+      cursor:pointer; transition:all .18s;
+    }
+    .cat-btn.active, .cat-btn:hover {
+      border-color:var(--green); background:var(--green); color:#fff;
+    }
+    .menu-section { margin-bottom:2rem; }
+    .menu-section h2 {
+      font-family:'Sora',sans-serif; font-size:1.2rem; font-weight:700;
+      margin-bottom:1rem; padding-bottom:8px;
+      border-bottom:2px solid var(--gray2);
+    }
+    .item-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:12px;
+    }
+    .menu-item {
+      background:#fff; border-radius:var(--radius); overflow:hidden;
+      display:flex; cursor:pointer;
+      transition:transform .2s, box-shadow .2s;
+      border:1.5px solid transparent;
+    }
+    .menu-item:hover {
+      transform:translateY(-3px);
+      box-shadow:0 8px 24px rgba(0,0,0,.1);
+      border-color:var(--green);
+    }
+    .item-img {
+      width:110px; min-height:110px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:3.5rem;
+    }
+    .item-body { flex:1; padding:12px 14px 12px 0; display:flex; flex-direction:column; }
+    .item-name { font-family:'Sora',sans-serif; font-size:.9rem; font-weight:700; }
+    .item-desc { font-size:.78rem; color:var(--muted); margin-top:4px; line-height:1.5; flex:1; }
+    .item-footer { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+    .item-price { font-weight:700; color:var(--green); font-size:.95rem; }
+    .btn-add {
+      background:var(--green); color:#fff; border:none;
+      border-radius:50px; padding:6px 16px;
+      font-weight:700; font-size:.82rem; cursor:pointer;
+      font-family:'DM Sans',sans-serif; transition:background .2s;
+    }
+    .btn-add:hover { background:var(--green-dk); }
+    .qty-ctrl { display:flex; align-items:center; gap:8px; }
+    .qty-btn {
+      width:28px; height:28px; border-radius:50%;
+      background:var(--green); color:#fff; border:none;
+      font-size:1.1rem; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .qty-num { font-weight:700; min-width:20px; text-align:center; }
+
+    /* Cart sidebar */
+    .cart-sidebar {
+      width:320px; flex-shrink:0;
+      background:#fff; border-left:1px solid var(--gray2);
+      padding:24px 20px;
+      position:sticky; top:68px;
+      height:calc(100vh - 68px);
+      overflow-y:auto;
+      display:flex; flex-direction:column;
+    }
+    .cart-sidebar h2 {
+      font-family:'Sora',sans-serif; font-size:1.1rem; font-weight:700;
+      margin-bottom:1rem;
+    }
+    .cart-empty {
+      flex:1; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center;
+    }
+    .cart-empty .ce-icon { font-size:3.5rem; margin-bottom:12px; }
+    .cart-empty p { color:var(--muted); font-size:.9rem; }
+    .cart-items { flex:1; }
+    .cart-line {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 0; border-bottom:1px solid var(--gray2);
+    }
+    .cart-line .cl-name { flex:1; font-size:.88rem; font-weight:600; }
+    .cart-line .cl-price { font-size:.85rem; color:var(--green); font-weight:700; }
+    .cart-summary { margin-top:16px; }
+    .cart-sum-row {
+      display:flex; justify-content:space-between;
+      font-size:.88rem; margin-bottom:6px; color:var(--muted);
+    }
+    .cart-sum-row.total {
+      font-size:1rem; font-weight:700; color:var(--dark);
+      border-top:2px solid var(--gray2); padding-top:10px; margin-top:8px;
+    }
+    .btn-checkout {
+      width:100%; background:var(--green); color:#fff;
+      border:none; border-radius:50px; padding:14px;
+      font-weight:700; font-size:1rem; cursor:pointer;
+      font-family:'DM Sans',sans-serif; margin-top:16px;
+      transition:background .2s;
+    }
+    .btn-checkout:hover { background:var(--green-dk); }
+    .btn-checkout:disabled { opacity:.5; cursor:default; }
+
+    @media(max-width:900px) {
+      .cart-sidebar { display:none; }
+      .cart-float {
+        position:fixed; bottom:20px; left:5%; right:5%; z-index:50;
+        background:var(--green); color:#fff; border-radius:50px;
+        padding:14px 24px; display:flex; justify-content:space-between;
+        align-items:center; cursor:pointer;
+        box-shadow:0 8px 32px rgba(0,134,106,.4);
+        font-weight:700;
+      }
+    }
+    @media(min-width:901px) { .cart-float { display:none; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Chop<span>Fast</span>📍</a>
+  <button class="nav-back" onclick="history.back()">← Back to restaurants</button>
+  <div class="nav-cta">
+    <button class="btn-icon">🛒<span class="cart-badge" id="nav-cart">0</span></button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="r-hero" id="r-hero" style="background:linear-gradient(135deg,#FFBE00,#E6A800)">
+  <span id="r-emoji">🍲</span>
+  <div class="r-hero-overlay"></div>
+  <div class="r-hero-info">
+    <h1 id="r-name">Chez Mama Biya</h1>
+    <div class="badges">
+      <span class="badge">⭐ 4.8 (312)</span>
+      <span class="badge">🕐 20–30 min</span>
+      <span class="badge">🚴 Free delivery</span>
+      <span class="badge green">Open now</span>
+    </div>
+  </div>
+</div>
+
+<div class="detail-layout">
+  <!-- Menu -->
+  <div class="menu-area">
+    <div class="category-nav" id="cat-nav"></div>
+    <div id="menu-container"></div>
+  </div>
+
+  <!-- Cart -->
+  <aside class="cart-sidebar">
+    <h2>🛒 Your Order</h2>
+    <div id="cart-body">
+      <div class="cart-empty">
+        <div class="ce-icon">🛒</div>
+        <p>Add items from the menu to start your order</p>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Mobile cart bar -->
+<div class="cart-float" id="cart-float" onclick="location.href='cart.html'" style="display:none">
+  <span id="cf-count">0 items</span>
+  <span>View cart →</span>
+  <span id="cf-total">0 XAF</span>
+</div>
+
+<script>
+const MENU = {
+  'Starters': [
+    { id:1, name:'Beignets de Haricots', desc:'Fried bean cakes with pepper sauce', price:500, emoji:'🫘' },
+    { id:2, name:'Koki Wraps', desc:'Black-eyed pea cake in banana leaf', price:600, emoji:'🥜' },
+    { id:3, name:'Acara', desc:'Fried bean fritters, street style', price:400, emoji:'🟡' },
+  ],
+  'Main Dishes': [
+    { id:4, name:'Eru & Waterfufu', desc:'Forest vegetable with smoked fish & crayfish', price:1500, emoji:'🫕' },
+    { id:5, name:'Ndolé Complet', desc:'Bitter leaf, groundnuts, beef & prawns', price:1800, emoji:'🥘' },
+    { id:6, name:'Poulet DG', desc:'Director General chicken with plantain & veggies', price:2500, emoji:'🍗' },
+    { id:7, name:'Achu Soup', desc:'Pounded cocoyam with yellow palm nut soup', price:1200, emoji:'🍚' },
+    { id:8, name:'Okok avec Viandegoût', desc:'Gnetum leaves with beef', price:1600, emoji:'🌿' },
+    { id:9, name:'Mbanga Soup & Rice', desc:'Palm nut soup with grilled fish', price:1900, emoji:'🐟' },
+  ],
+  'Grills': [
+    { id:10, name:'Brochettes de Boeuf', desc:'Grilled beef skewers with spicy sauce', price:1200, emoji:'🍢' },
+    { id:11, name:'Poisson Braisé', desc:'Charcoal-grilled fish with miondo', price:2000, emoji:'🐠' },
+    { id:12, name:'Poulet Braisé', desc:'Half grilled chicken, smoky & spiced', price:2200, emoji:'🍖' },
+  ],
+  'Drinks': [
+    { id:13, name:'Top Citron', desc:'Cameroonian lemon soda', price:300, emoji:'🍋' },
+    { id:14, name:'Jus de Bissap', desc:'Fresh hibiscus flower juice', price:400, emoji:'🌺' },
+    { id:15, name:'Eau Minérale', desc:'500ml mineral water', price:200, emoji:'💧' },
+  ],
+};
+
+const cart = {};
+
+function getItemTotal(id) {
+  return cart[id] ? cart[id].qty * cart[id].price : 0;
+}
+
+function cartTotal() {
+  return Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0);
+}
+
+function cartCount() {
+  return Object.values(cart).reduce((s, i) => s + i.qty, 0);
+}
+
+function renderMenu() {
+  const catNav = document.getElementById('cat-nav');
+  const container = document.getElementById('menu-container');
+
+  catNav.innerHTML = Object.keys(MENU).map((cat, i) =>
+    `<button class="cat-btn${i===0?' active':''}" onclick="scrollToSection('${cat}',this)">${cat}</button>`
+  ).join('');
+
+  container.innerHTML = Object.entries(MENU).map(([cat, items]) => `
+    <div class="menu-section" id="sec-${cat.replace(/\s/g,'-')}">
+      <h2>${cat}</h2>
+      <div class="item-grid">
+        ${items.map(item => `
+          <div class="menu-item" id="item-${item.id}">
+            <div class="item-img" style="background:${itemBg(item.id)}">${item.emoji}</div>
+            <div class="item-body">
+              <div class="item-name">${item.name}</div>
+              <div class="item-desc">${item.desc}</div>
+              <div class="item-footer">
+                <div class="item-price">${item.price.toLocaleString()} XAF</div>
+                <div id="ctrl-${item.id}">
+                  <button class="btn-add" onclick="addItem(${item.id},'${item.name}',${item.price})">+ Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function itemBg(id) {
+  const bgs = [
+    'linear-gradient(135deg,#FFBE00,#E6A800)',
+    'linear-gradient(135deg,#ffd3a5,#fd7a3c)',
+    'linear-gradient(135deg,#a8e6cf,#3d9970)',
+    'linear-gradient(135deg,#d4fc79,#96e6a1)',
+    'linear-gradient(135deg,#f7971e,#ffd200)',
+    'linear-gradient(135deg,#43cea2,#185a9d)',
+    'linear-gradient(135deg,#667eea,#764ba2)',
+  ];
+  return bgs[id % bgs.length];
+}
+
+function addItem(id, name, price) {
+  cart[id] = cart[id] ? { ...cart[id], qty: cart[id].qty + 1 } : { id, name, price, qty: 1 };
+  updateCtrl(id);
+  renderCartSidebar();
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty += delta;
+  if (cart[id].qty <= 0) delete cart[id];
+  updateCtrl(id);
+  renderCartSidebar();
+}
+
+function updateCtrl(id) {
+  const ctrl = document.getElementById(`ctrl-${id}`);
+  if (!ctrl) return;
+  const item = Object.values(MENU).flat().find(i => i.id === id);
+  if (!item) return;
+
+  if (cart[id]) {
+    ctrl.innerHTML = `
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+        <span class="qty-num">${cart[id].qty}</span>
+        <button class="qty-btn" onclick="changeQty(${id},1)">+</button>
+      </div>`;
+  } else {
+    ctrl.innerHTML = `<button class="btn-add" onclick="addItem(${id},'${item.name}',${item.price})">+ Add</button>`;
+  }
+}
+
+function renderCartSidebar() {
+  const body = document.getElementById('cart-body');
+  const count = cartCount();
+  const total = cartTotal();
+
+  document.getElementById('nav-cart').textContent = count;
+
+  // Mobile float
+  const cf = document.getElementById('cart-float');
+  if (count > 0) {
+    cf.style.display = 'flex';
+    document.getElementById('cf-count').textContent = `${count} item${count>1?'s':''}`;
+    document.getElementById('cf-total').textContent = `${total.toLocaleString()} XAF`;
+  } else {
+    cf.style.display = 'none';
+  }
+
+  if (count === 0) {
+    body.innerHTML = `
+      <div class="cart-empty">
+        <div class="ce-icon">🛒</div>
+        <p>Add items from the menu to start your order</p>
+      </div>`;
+    return;
+  }
+
+  const fee = 200;
+  const tax = Math.round(total * 0.08);
+  const grand = total + fee + tax;
+
+  body.innerHTML = `
+    <div class="cart-items">
+      ${Object.values(cart).map(item => `
+        <div class="cart-line">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(${item.id},-1)" style="width:22px;height:22px;font-size:.9rem">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id},1)" style="width:22px;height:22px;font-size:.9rem">+</button>
+          </div>
+          <div class="cl-name">${item.name}</div>
+          <div class="cl-price">${(item.qty * item.price).toLocaleString()} XAF</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="cart-summary">
+      <div class="cart-sum-row"><span>Subtotal</span><span>${total.toLocaleString()} XAF</span></div>
+      <div class="cart-sum-row"><span>Delivery fee</span><span>${fee.toLocaleString()} XAF</span></div>
+      <div class="cart-sum-row"><span>Tax (8%)</span><span>${tax.toLocaleString()} XAF</span></div>
+      <div class="cart-sum-row total"><span>Total</span><span>${grand.toLocaleString()} XAF</span></div>
+    </div>
+    <button class="btn-checkout" onclick="location.href='checkout.html'">Go to Checkout →</button>
+  `;
+}
+
+function scrollToSection(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById(`sec-${cat.replace(/\s/g,'-')}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+renderMenu();
+renderCartSidebar();
+</script>
+</body>
+</html>

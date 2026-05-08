@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChopFast — Restaurants Near You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --yellow: #FFBE00; --green: #00866A; --green-dk: #006652;
+      --green-lt: #00A882; --dark: #1A1A1A; --white: #FFFFFF;
+      --gray: #F4F6F4; --gray2: #E8EDE8; --text: #2D2D2D;
+      --muted: #6B7280; --radius: 14px; --radius-lg: 28px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--gray); }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 68px;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .nav-logo {
+      font-family: 'Sora', sans-serif; font-weight: 800;
+      font-size: 1.5rem; color: var(--dark);
+      display: flex; align-items: center; gap: 6px; text-decoration: none;
+    }
+    .nav-logo span { color: var(--yellow); }
+    .nav-search {
+      flex: 1; max-width: 420px; margin: 0 2rem;
+      display: flex; align-items: center;
+      background: var(--gray); border-radius: 50px;
+      padding: 8px 16px; gap: 8px;
+      border: 1.5px solid var(--gray2);
+    }
+    .nav-search input {
+      flex: 1; border: none; outline: none; background: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text);
+    }
+    .nav-cta { display: flex; gap: .75rem; align-items: center; }
+    .btn-icon {
+      background: none; border: none; font-size: 1.4rem; cursor: pointer;
+      position: relative;
+    }
+    .cart-badge {
+      position: absolute; top: -4px; right: -6px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      font-size: 0.65rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      border: none; font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; font-family: 'Sora', sans-serif;
+    }
+
+    /* Address bar */
+    .address-bar {
+      background: var(--yellow); padding: 14px 5%;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .address-bar .addr-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border-radius: 50px;
+      padding: 8px 16px; cursor: pointer;
+      font-weight: 600; font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: box-shadow .2s;
+    }
+    .address-bar .addr-pill:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
+    /* Layout */
+    .page-layout {
+      display: flex; gap: 0; max-width: 1400px; margin: 0 auto;
+    }
+
+    /* Sidebar filters */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      padding: 24px 20px;
+      background: var(--white);
+      border-right: 1px solid var(--gray2);
+      min-height: calc(100vh - 130px);
+    }
+    .sidebar h3 {
+      font-family: 'Sora', sans-serif; font-size: 1rem;
+      font-weight: 700; margin-bottom: 1rem; color: var(--dark);
+    }
+    .filter-group { margin-bottom: 1.5rem; }
+    .filter-group label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 10px;
+      cursor: pointer; font-size: 0.9rem;
+      transition: background .15s;
+    }
+    .filter-group label:hover { background: var(--gray); }
+    .filter-group input[type="checkbox"] { accent-color: var(--green); width: 16px; height: 16px; }
+    .filter-group input[type="range"] {
+      width: 100%; accent-color: var(--green); margin-top: 8px;
+    }
+    .range-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: var(--muted); margin-top: 4px;
+    }
+    .sidebar-divider { height: 1px; background: var(--gray2); margin: 1rem 0; }
+
+    /* Main content */
+    .main-content { flex: 1; padding: 24px 28px; }
+
+    /* Sort / results bar */
+    .results-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; flex-wrap: wrap; gap: .75rem;
+    }
+    .results-bar h2 {
+      font-family: 'Sora', sans-serif; font-size: 1.35rem; font-weight: 700;
+    }
+    .results-bar span { color: var(--muted); font-size: 0.9rem; }
+    .sort-select {
+      border: 1.5px solid var(--gray2); border-radius: 10px;
+      padding: 8px 14px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; color: var(--text); background: #fff;
+      cursor: pointer; outline: none;
+    }
+
+    /* Category chips */
+    .chips-row {
+      display: flex; gap: 10px; overflow-x: auto;
+      padding-bottom: 4px; margin-bottom: 1.5rem;
+    }
+    .chip {
+      white-space: nowrap; padding: 8px 18px;
+      border-radius: 50px; border: 1.5px solid var(--gray2);
+      background: #fff; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all .18s;
+    }
+    .chip.active, .chip:hover {
+      border-color: var(--green); background: var(--green);
+      color: #fff;
+    }
+
+    /* Restaurant grid */
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .r-card {
+      background: #fff; border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer;
+      transition: transform .22s, box-shadow .22s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      text-decoration: none; color: inherit;
+      display: block;
+    }
+    .r-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+    .r-banner {
+      height: 152px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative;
+    }
+    .r-badge-closed {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.65); color: #fff;
+      font-size: 0.7rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .r-badge-promo {
+      position: absolute; top: 10px; right: 10px;
+      background: var(--yellow); color: var(--dark);
+      font-size: 0.7rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .r-body { padding: 14px 16px; }
+    .r-row { display: flex; justify-content: space-between; align-items: flex-start; }
+    .r-name {
+      font-family: 'Sora', sans-serif; font-size: 1rem;
+      font-weight: 700; margin-bottom: 3px;
+    }
+    .r-cuisine { font-size: 0.82rem; color: var(--muted); }
+    .r-rating {
+      display: flex; align-items: center; gap: 3px;
+      font-size: 0.85rem; font-weight: 700;
+    }
+    .r-meta {
+      display: flex; gap: 10px; margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .r-meta-item {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 0.8rem; color: var(--muted);
+    }
+
+    /* Skeleton loader */
+    .skeleton {
+      background: linear-gradient(90deg, var(--gray) 25%, var(--gray2) 50%, var(--gray) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Promo banner */
+    .promo-banner {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dk) 100%);
+      border-radius: var(--radius-lg); padding: 24px 28px;
+      color: #fff; margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .promo-banner h3 {
+      font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 700;
+    }
+    .promo-banner p { font-size: 0.9rem; opacity: 0.85; margin-top: 4px; }
+    .promo-banner .promo-emoji { font-size: 3rem; }
+    .btn-promo {
+      background: var(--yellow); color: var(--dark);
+      border: none; border-radius: 50px; padding: 10px 22px;
+      font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      white-space: nowrap; transition: opacity .2s;
+    }
+    .btn-promo:hover { opacity: .85; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .nav-search { display: none; }
+      .page-layout { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-logo" href="index.html">Chop<span>Fast</span>📍</a>
+  <div class="nav-search">
+    <span>🔍</span>
+    <input type="text" placeholder="Search restaurants or dishes…" />
+  </div>
+  <div class="nav-cta">
+    <button class="btn-icon" onclick="location.href='cart.html'">
+      🛒<span class="cart-badge" id="cart-count">0</span>
+    </button>
+    <button class="btn-avatar">J</button>
+  </div>
+</nav>
+
+<!-- Address bar -->
+<div class="address-bar">
+  <div class="addr-pill">
+    📍 <span id="addr-text">Yaoundé, Centre, Cameroon</span> ▾
+  </div>
+  <span style="font-size:.85rem;font-weight:600;color:#555;">
+    🕐 Delivery in 20–35 min
+  </span>
+</div>
+
+<div class="page-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="filter-group">
+      <h3>Sort by</h3>
+      <label><input type="radio" name="sort" checked /> Recommended</label>
+      <label><input type="radio" name="sort" /> Fastest delivery</label>
+      <label><input type="radio" name="sort" /> Top rated</label>
+      <label><input type="radio" name="sort" /> Price: Low to High</label>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="filter-group">
+      <h3>Dietary</h3>
+      <label><input type="checkbox" /> Vegetarian 🥦</label>
+      <label><input type="checkbox" /> Halal 🌙</label>
+      <label><input type="checkbox" /> Gluten-free</label>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="filter-group">
+      <h3>Max delivery fee</h3>
+      <input type="range" min="0" max="500" value="300" />
+      <div class="range-labels"><span>0 XAF</span><span>500 XAF</span></div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="filter-group">
+      <h3>Rating</h3>
+      <label><input type="checkbox" /> ⭐ 4.5+</label>
+      <label><input type="checkbox" /> ⭐ 4.0+</label>
+      <label><input type="checkbox" /> ⭐ 3.5+</label>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="filter-group">
+      <h3>Open now</h3>
+      <label><input type="checkbox" checked /> Show only open</label>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- Promo banner -->
+    <div class="promo-banner">
+      <div>
+        <h3>🎉 Free delivery this weekend!</h3>
+        <p>Use code <strong>CHOPFREE</strong> on your first order over 2,500 XAF</p>
+      </div>
+      <span class="promo-emoji">🍲</span>
+      <button class="btn-promo">Order Now</button>
+    </div>
+
+    <!-- Category chips -->
+    <div class="chips-row">
+      <div class="chip active" onclick="filterCat(this)">All</div>
+      <div class="chip" onclick="filterCat(this)">🍲 Cameroonian</div>
+      <div class="chip" onclick="filterCat(this)">🍗 Grills</div>
+      <div class="chip" onclick="filterCat(this)">🫕 Soups</div>
+      <div class="chip" onclick="filterCat(this)">🥜 Snacks</div>
+      <div class="chip" onclick="filterCat(this)">🛒 Groceries</div>
+      <div class="chip" onclick="filterCat(this)">💊 Pharmacy</div>
+      <div class="chip" onclick="filterCat(this)">🎂 Bakery</div>
+      <div class="chip" onclick="filterCat(this)">🥤 Drinks</div>
+    </div>
+
+    <!-- Results bar -->
+    <div class="results-bar">
+      <div>
+        <h2>Restaurants near you</h2>
+        <span id="result-count">12 places found</span>
+      </div>
+      <select class="sort-select">
+        <option>Recommended</option>
+        <option>Fastest delivery</option>
+        <option>Top rated</option>
+        <option>Lowest fee</option>
+      </select>
+    </div>
+
+    <!-- Restaurant grid -->
+    <div class="restaurant-grid" id="restaurant-grid">
+      <!-- Populated by JS -->
+    </div>
+
+  </main>
+</div>
+
+<script>
+const RESTAURANTS = [
+  {
+    id: 1, name: 'Chez Mama Biya', cuisine: 'Cameroonian · Traditional',
+    emoji: '🍲', bg: 'linear-gradient(135deg,#FFBE00,#E6A800)',
+    rating: 4.8, reviews: 312, time: '20–30', fee: 'Free', open: true, promo: 'Free delivery',
+  },
+  {
+    id: 2, name: 'La Fourchette d\'Or', cuisine: 'Cameroonian · Grills',
+    emoji: '🍗', bg: 'linear-gradient(135deg,#ffd3a5,#fd7a3c)',
+    rating: 4.6, reviews: 201, time: '25–40', fee: '200 XAF', open: true, promo: null,
+  },
+  {
+    id: 3, name: 'Ndolé House', cuisine: 'Cameroonian · Soups',
+    emoji: '🥘', bg: 'linear-gradient(135deg,#a8e6cf,#3d9970)',
+    rating: 4.9, reviews: 489, time: '15–25', fee: 'Free', open: true, promo: '20% off',
+  },
+  {
+    id: 4, name: 'Eru & Co.', cuisine: 'Cameroonian · Forest Veg',
+    emoji: '🫕', bg: 'linear-gradient(135deg,#d4fc79,#96e6a1)',
+    rating: 4.7, reviews: 174, time: '30–45', fee: '150 XAF', open: true, promo: null,
+  },
+  {
+    id: 5, name: 'Poulet DG Palace', cuisine: 'Cameroonian · Chicken',
+    emoji: '🥘', bg: 'linear-gradient(135deg,#f7971e,#ffd200)',
+    rating: 4.5, reviews: 96, time: '20–35', fee: '250 XAF', open: false, promo: null,
+  },
+  {
+    id: 6, name: 'Achu Soup Garden', cuisine: 'Cameroonian · North West',
+    emoji: '🍚', bg: 'linear-gradient(135deg,#43cea2,#185a9d)',
+    rating: 4.4, reviews: 88, time: '25–40', fee: 'Free', open: true, promo: null,
+  },
+  {
+    id: 7, name: 'Brasserie du Wouri', cuisine: 'Cameroonian · Seafood',
+    emoji: '🐟', bg: 'linear-gradient(135deg,#667eea,#764ba2)',
+    rating: 4.6, reviews: 143, time: '30–45', fee: '300 XAF', open: true, promo: null,
+  },
+  {
+    id: 8, name: 'Koki & Beignets', cuisine: 'Cameroonian · Snacks',
+    emoji: '🥜', bg: 'linear-gradient(135deg,#f953c6,#b91d73)',
+    rating: 4.3, reviews: 67, time: '15–20', fee: 'Free', open: true, promo: 'New',
+  },
+  {
+    id: 9, name: 'SuperMarché Mvog-Mbi', cuisine: 'Groceries · Supermarket',
+    emoji: '🛒', bg: 'linear-gradient(135deg,#11998e,#38ef7d)',
+    rating: 4.2, reviews: 55, time: '35–50', fee: '200 XAF', open: true, promo: null,
+  },
+  {
+    id: 10, name: 'Pharmacie du Centre', cuisine: 'Pharmacy',
+    emoji: '💊', bg: 'linear-gradient(135deg,#e0eafc,#cfdef3)',
+    rating: 4.7, reviews: 112, time: '20–30', fee: 'Free', open: true, promo: null,
+  },
+  {
+    id: 11, name: 'Sangah Palace', cuisine: 'Cameroonian · Littoral',
+    emoji: '🥗', bg: 'linear-gradient(135deg,#c94b4b,#4b134f)',
+    rating: 4.5, reviews: 79, time: '25–35', fee: '150 XAF', open: true, promo: null,
+  },
+  {
+    id: 12, name: 'Boulangerie Moderne', cuisine: 'Bakery · Pastries',
+    emoji: '🎂', bg: 'linear-gradient(135deg,#fceabb,#f8b500)',
+    rating: 4.6, reviews: 201, time: '10–20', fee: 'Free', open: true, promo: null,
+  },
+];
+
+function renderGrid(list) {
+  const grid = document.getElementById('restaurant-grid');
+  document.getElementById('result-count').textContent = `${list.length} places found`;
+  grid.innerHTML = list.map(r => `
+    <a class="r-card" href="restaurant.html?id=${r.id}">
+      <div class="r-banner" style="background:${r.bg}">
+        ${r.emoji}
+        ${!r.open ? '<span class="r-badge-closed">Closed</span>' : ''}
+        ${r.promo ? `<span class="r-badge-promo">${r.promo}</span>` : ''}
+      </div>
+      <div class="r-body">
+        <div class="r-row">
+          <div>
+            <div class="r-name">${r.name}</div>
+            <div class="r-cuisine">${r.cuisine}</div>
+          </div>
+          <div class="r-rating">⭐ ${r.rating}</div>
+        </div>
+        <div class="r-meta">
+          <div class="r-meta-item">🕐 ${r.time} min</div>
+          <div class="r-meta-item">🚴 ${r.fee}</div>
+          <div class="r-meta-item">💬 ${r.reviews} reviews</div>
+        </div>
+      </div>
+    </a>
+  `).join('');
+}
+
+function filterCat(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const cat = el.textContent.trim().toLowerCase();
+  const filtered = cat === 'all'
+    ? RESTAURANTS
+    : RESTAURANTS.filter(r => r.cuisine.toLowerCase().includes(cat.replace(/^[^\s]+\s/, '')));
+  renderGrid(filtered);
+}
+
+// Init
+renderGrid(RESTAURANTS);
+</script>
+</body>
+</html>

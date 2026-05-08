@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChopFast — Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --yellow:#FFBE00; --green:#00866A; --green-dk:#006652;
+      --dark:#1A1A1A; --white:#fff; --gray:#F4F6F4;
+      --gray2:#E8EDE8; --text:#2D2D2D; --muted:#6B7280;
+      --radius:14px; --radius-lg:24px;
+    }
+    body { font-family:'DM Sans',sans-serif; color:var(--text); background:var(--gray); }
+
+    nav {
+      position:sticky; top:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5%; height:68px;
+      background:rgba(255,255,255,.97); backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(0,0,0,.07);
+    }
+    .nav-logo { font-family:'Sora',sans-serif; font-weight:800; font-size:1.5rem;
+      color:var(--dark); display:flex; align-items:center; gap:6px; text-decoration:none; }
+    .nav-logo span { color:var(--yellow); }
+    .steps-bar {
+      display:flex; align-items:center; gap:8px; font-size:.85rem; font-weight:600;
+    }
+    .step-dot {
+      width:28px; height:28px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:.8rem;
+    }
+    .step-dot.done { background:var(--green); color:#fff; }
+    .step-dot.active { background:var(--yellow); color:var(--dark); }
+    .step-dot.idle { background:var(--gray2); color:var(--muted); }
+    .step-line { width:32px; height:2px; background:var(--gray2); border-radius:2px; }
+    .step-line.done { background:var(--green); }
+
+    .checkout-layout {
+      display:flex; gap:24px; max-width:1100px;
+      margin:32px auto; padding:0 5%;
+    }
+    .checkout-main { flex:1; }
+    .checkout-aside { width:340px; flex-shrink:0; }
+
+    .section-card {
+      background:#fff; border-radius:var(--radius-lg);
+      padding:24px 28px; margin-bottom:20px;
+      box-shadow:0 2px 12px rgba(0,0,0,.05);
+    }
+    .section-card h2 {
+      font-family:'Sora',sans-serif; font-size:1.1rem; font-weight:700;
+      margin-bottom:1.2rem; display:flex; align-items:center; gap:8px;
+    }
+
+    .form-group { margin-bottom:14px; }
+    .form-group label {
+      display:block; font-size:.85rem; font-weight:600;
+      margin-bottom:6px; color:var(--dark);
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; border:1.5px solid var(--gray2); border-radius:10px;
+      padding:11px 14px; font-family:'DM Sans',sans-serif;
+      font-size:.95rem; color:var(--text); outline:none;
+      transition:border-color .2s; background:#fff;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color:var(--green);
+    }
+    .form-row { display:flex; gap:12px; }
+    .form-row .form-group { flex:1; }
+    textarea { resize:none; height:80px; }
+
+    .payment-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+    .pay-opt {
+      border:2px solid var(--gray2); border-radius:var(--radius);
+      padding:14px 10px; text-align:center; cursor:pointer;
+      transition:all .18s; user-select:none;
+    }
+    .pay-opt:hover { border-color:var(--green); }
+    .pay-opt.selected { border-color:var(--green); background:rgba(0,134,106,.06); }
+    .pay-opt .pay-icon { font-size:1.8rem; margin-bottom:6px; }
+    .pay-opt .pay-label { font-size:.78rem; font-weight:600; }
+
+    /* Order summary aside */
+    .order-summary {
+      background:#fff; border-radius:var(--radius-lg);
+      padding:24px; position:sticky; top:88px;
+      box-shadow:0 2px 12px rgba(0,0,0,.05);
+    }
+    .order-summary h2 {
+      font-family:'Sora',sans-serif; font-size:1.05rem; font-weight:700;
+      margin-bottom:1rem;
+    }
+    .sum-item {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      margin-bottom:10px; font-size:.88rem;
+    }
+    .sum-item .si-name { flex:1; color:var(--text); }
+    .sum-item .si-qty { color:var(--muted); margin:0 10px; }
+    .sum-item .si-price { font-weight:700; color:var(--green); }
+    .sum-divider { height:1px; background:var(--gray2); margin:12px 0; }
+    .sum-row {
+      display:flex; justify-content:space-between; font-size:.88rem;
+      margin-bottom:6px; color:var(--muted);
+    }
+    .sum-row.total {
+      font-size:1.05rem; font-weight:700; color:var(--dark);
+      margin-top:6px; padding-top:10px;
+      border-top:2px solid var(--gray2);
+    }
+    .btn-place {
+      width:100%; background:var(--green); color:#fff;
+      border:none; border-radius:50px; padding:15px;
+      font-weight:700; font-size:1rem; cursor:pointer;
+      font-family:'DM Sans',sans-serif; margin-top:16px;
+      transition:background .2s;
+    }
+    .btn-place:hover { background:var(--green-dk); }
+    .secure-note {
+      text-align:center; font-size:.75rem; color:var(--muted);
+      margin-top:10px; display:flex; align-items:center; justify-content:center; gap:4px;
+    }
+
+    /* Confirmation overlay */
+    .confirm-overlay {
+      display:none; position:fixed; inset:0; z-index:200;
+      background:rgba(0,0,0,.55); align-items:center; justify-content:center;
+      backdrop-filter:blur(6px);
+    }
+    .confirm-overlay.show { display:flex; }
+    .confirm-box {
+      background:#fff; border-radius:var(--radius-lg);
+      padding:3rem 2.5rem; max-width:440px; width:90%;
+      text-align:center;
+      animation:popIn .4s cubic-bezier(.25,.46,.45,.94) both;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.88) translateY(20px); }
+      to   { opacity:1; transform:none; }
+    }
+    .confirm-box .tick { font-size:5rem; margin-bottom:1rem; }
+    .confirm-box h2 {
+      font-family:'Sora',sans-serif; font-size:1.8rem; font-weight:800;
+      margin-bottom:.5rem;
+    }
+    .confirm-box p { color:var(--muted); margin-bottom:1.5rem; line-height:1.6; }
+    .confirm-box .order-ref {
+      background:var(--gray); border-radius:10px; padding:12px 20px;
+      font-weight:700; font-family:'Sora',sans-serif; margin-bottom:1.5rem;
+      font-size:1.1rem;
+    }
+    .btn-track {
+      width:100%; background:var(--green); color:#fff;
+      border:none; border-radius:50px; padding:14px;
+      font-weight:700; font-size:1rem; cursor:pointer;
+      font-family:'DM Sans',sans-serif; margin-bottom:10px;
+    }
+    .btn-back-home {
+      width:100%; background:none; border:2px solid var(--green);
+      color:var(--green); border-radius:50px; padding:12px;
+      font-weight:700; font-size:.95rem; cursor:pointer;
+      font-family:'DM Sans',sans-serif;
+    }
+
+    @media(max-width:800px) {
+      .checkout-layout { flex-direction:column; }
+      .checkout-aside { width:100%; }
+      .payment-grid { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Chop<span>Fast</span>📍</a>
+  <div class="steps-bar">
+    <div class="step-dot done">✓</div>
+    <div class="step-line done"></div>
+    <div class="step-dot active">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot idle">3</div>
+  </div>
+  <div style="width:120px"></div>
+</nav>
+
+<div class="checkout-layout">
+  <!-- Main form -->
+  <div class="checkout-main">
+
+    <!-- Delivery address -->
+    <div class="section-card">
+      <h2>📍 Delivery Address</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Jean" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Mbarga" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+237 6XX XXX XXX" />
+      </div>
+      <div class="form-group">
+        <label>Street Address</label>
+        <input type="text" placeholder="Rue de l'Indépendance, Quartier Bastos" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City</label>
+          <select>
+            <option>Yaoundé</option>
+            <option>Douala</option>
+            <option>Bafoussam</option>
+            <option>Bamenda</option>
+            <option>Limbe</option>
+            <option>Garoua</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Neighbourhood</label>
+          <input type="text" placeholder="Bastos, Melen…" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div class="section-card">
+      <h2>💳 Payment Method</h2>
+      <div class="payment-grid">
+        <div class="pay-opt selected" onclick="selectPay(this)">
+          <div class="pay-icon">💵</div>
+          <div class="pay-label">Cash on Delivery</div>
+        </div>
+        <div class="pay-opt" onclick="selectPay(this)">
+          <div class="pay-icon">📱</div>
+          <div class="pay-label">Mobile Money</div>
+        </div>
+        <div class="pay-opt" onclick="selectPay(this)">
+          <div class="pay-icon">💳</div>
+          <div class="pay-label">Card</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Special instructions -->
+    <div class="section-card">
+      <h2>📝 Special Instructions</h2>
+      <div class="form-group" style="margin:0">
+        <textarea placeholder="Extra pepper sauce, ring doorbell, leave at gate…"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Order summary -->
+  <aside class="checkout-aside">
+    <div class="order-summary">
+      <h2>🧾 Order Summary</h2>
+      <div class="sum-item"><span class="si-name">Eru & Waterfufu</span><span class="si-qty">×1</span><span class="si-price">1,500 XAF</span></div>
+      <div class="sum-item"><span class="si-name">Poulet DG</span><span class="si-qty">×1</span><span class="si-price">2,500 XAF</span></div>
+      <div class="sum-item"><span class="si-name">Top Citron</span><span class="si-qty">×2</span><span class="si-price">600 XAF</span></div>
+      <div class="sum-divider"></div>
+      <div class="sum-row"><span>Subtotal</span><span>4,600 XAF</span></div>
+      <div class="sum-row"><span>Delivery fee</span><span>200 XAF</span></div>
+      <div class="sum-row"><span>Tax (8%)</span><span>368 XAF</span></div>
+      <div class="sum-row total"><span>Total</span><span>5,168 XAF</span></div>
+      <button class="btn-place" onclick="placeOrder()">
+        Place Order · 5,168 XAF
+      </button>
+      <div class="secure-note">🔒 Secure & encrypted checkout</div>
+    </div>
+  </aside>
+</div>
+
+<!-- Confirmation modal -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="tick">✅</div>
+    <h2>Order Placed!</h2>
+    <p>Your Cameroonian feast is being prepared. Your rider will pick it up shortly!</p>
+    <div class="order-ref" id="order-ref">#CF-000000</div>
+    <button class="btn-track" onclick="location.href='orders.html'">Track My Order 🚴</button>
+    <button class="btn-back-home" onclick="location.href='index.html'">Back to Home</button>
+  </div>
+</div>
+
+<script>
+function selectPay(el) {
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function placeOrder() {
+  const ref = '#CF-' + Math.random().toString(36).substr(2,6).toUpperCase();
+  document.getElementById('order-ref').textContent = ref;
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+</script>
+</body>
+</html>
