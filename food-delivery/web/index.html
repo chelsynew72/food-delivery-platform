@@ -5,928 +5,1113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ChopFast — Cameroonian Food Delivery & More</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Variables ─────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --yellow:   #FFBE00;
-      --yellow-dk:#E6A800;
-      --green:    #00866A;
+      --yellow: #FFBE00;
+      --yellow-dk: #E6A800;
+      --yellow-lt: #FFF3CC;
+      --green: #00866A;
       --green-dk: #006652;
       --green-lt: #00A882;
-      --dark:     #1A1A1A;
-      --dark2:    #222;
-      --white:    #FFFFFF;
-      --gray:     #F4F6F4;
-      --gray2:    #E8EDE8;
-      --text:     #2D2D2D;
-      --muted:    #6B7280;
-      --radius:   14px;
-      --radius-lg:28px;
+      --dark: #141414;
+      --white: #FFFFFF;
+      --gray: #F7F8F6;
+      --gray2: #EAEEE9;
+      --text: #1E2019;
+      --muted: #6B7280;
+      --radius: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 36px;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text);
-      background: var(--white);
-      overflow-x: hidden;
-    }
-
-    /* ── Nav ───────────────────────────────────────────────────── */
+    /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%;
-      height: 68px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 0 6%;
+      height: 72px;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      transition: box-shadow .3s;
     }
-
+    nav.scrolled { box-shadow: 0 2px 30px rgba(0,0,0,0.08); }
     .nav-logo {
-      font-family: 'Sora', sans-serif;
-      font-weight: 800;
-      font-size: 1.5rem;
-      color: var(--dark);
-      display: flex; align-items: center; gap: 6px;
-      text-decoration: none;
+      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.6rem;
+      color: var(--dark); text-decoration: none;
+      display: flex; align-items: center; gap: 4px;
     }
-    .nav-logo span { color: var(--yellow); }
-    .nav-logo .pin { color: var(--green); font-size: 1.3rem; }
-
-    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-logo .accent { color: var(--yellow); }
+    .nav-logo .pin-dot {
+      width: 10px; height: 10px; background: var(--green);
+      border-radius: 50%; margin-left: 2px; margin-bottom: 10px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2.2rem; }
     .nav-links a {
-      text-decoration: none; font-weight: 500;
-      color: var(--muted); font-size: 0.95rem;
-      transition: color .2s;
+      text-decoration: none; font-weight: 500; color: var(--muted);
+      font-size: 0.95rem; transition: color .2s; letter-spacing: -0.01em;
     }
     .nav-links a:hover { color: var(--green); }
-
-    .nav-cta {
-      display: flex; gap: .75rem;
+    .nav-cta { display: flex; gap: .75rem; align-items: center; }
+    .btn-ghost {
+      background: none; border: none; font-family: 'DM Sans', sans-serif;
+      font-weight: 600; font-size: 0.95rem; color: var(--text);
+      cursor: pointer; padding: 9px 18px; border-radius: 50px;
+      transition: background .2s;
     }
-    .btn-outline {
-      border: 2px solid var(--green); color: var(--green);
-      background: none; padding: 8px 20px;
-      border-radius: 50px; font-weight: 600;
-      cursor: pointer; font-size: 0.9rem;
-      transition: all .2s; font-family: 'DM Sans', sans-serif;
+    .btn-ghost:hover { background: var(--gray); }
+    .btn-pill {
+      background: var(--green); color: #fff; border: none;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
+      padding: 10px 24px; border-radius: 50px; cursor: pointer;
+      transition: all .25s;
     }
-    .btn-outline:hover { background: var(--green); color: #fff; }
+    .btn-pill:hover { background: var(--green-dk); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,134,106,0.3); }
 
-    .btn-primary {
-      background: var(--green); color: #fff;
-      border: none; padding: 10px 22px;
-      border-radius: 50px; font-weight: 600;
-      cursor: pointer; font-size: 0.9rem;
-      transition: all .2s; font-family: 'DM Sans', sans-serif;
-    }
-    .btn-primary:hover { background: var(--green-dk); transform: translateY(-1px); }
-
-    /* ── Hero ──────────────────────────────────────────────────── */
+    /* ── HERO ── */
     .hero {
       min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 72px 0 0;
       background: var(--yellow);
-      display: flex; align-items: center;
-      padding: 100px 5% 60px;
-      position: relative;
       overflow: hidden;
+      position: relative;
     }
+    .hero-left {
+      padding: 80px 6% 80px 8%;
+      z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,0,0,0.08); color: var(--dark);
+      border-radius: 50px; padding: 7px 16px; font-size: 0.82rem;
+      font-weight: 600; margin-bottom: 1.75rem;
+      animation: fadeDown .6s ease both;
+    }
+    .hero-badge .blink {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green); display: inline-block;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-16px);} to{opacity:1;transform:none;} }
 
-    /* Wave at bottom of hero */
-    .hero::after {
+    .hero h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(3rem, 4.5vw, 5rem);
+      font-weight: 800; line-height: 1.05;
+      color: var(--dark); letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+      animation: slideUp .7s .1s cubic-bezier(.25,.46,.45,.94) both;
+    }
+    .hero h1 em { font-style: normal; color: var(--green-dk); }
+    .hero-sub {
+      font-size: 1.15rem; color: rgba(20,20,20,0.7);
+      font-weight: 500; line-height: 1.65;
+      margin-bottom: 2.25rem;
+      animation: slideUp .7s .2s cubic-bezier(.25,.46,.45,.94) both;
+    }
+    @keyframes slideUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:none;} }
+
+    .hero-search {
+      display: flex; align-items: center;
+      background: #fff; border-radius: 50px;
+      padding: 7px 7px 7px 20px;
+      gap: 12px; max-width: 480px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+      animation: slideUp .7s .3s cubic-bezier(.25,.46,.45,.94) both;
+    }
+    .hero-search .loc-icon { font-size: 1rem; color: var(--green); flex-shrink: 0; }
+    .hero-search input {
+      flex: 1; border: none; outline: none; background: none;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--text);
+    }
+    .hero-search input::placeholder { color: #b0b0b0; }
+    .hero-search .btn-find {
+      background: var(--green); color: #fff; border: none;
+      border-radius: 50px; padding: 12px 22px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700;
+      font-size: 0.9rem; cursor: pointer; white-space: nowrap;
+      transition: background .2s;
+    }
+    .hero-search .btn-find:hover { background: var(--green-dk); }
+    .hero-trust {
+      display: flex; align-items: center; gap: 20px;
+      margin-top: 2rem;
+      animation: slideUp .7s .4s cubic-bezier(.25,.46,.45,.94) both;
+    }
+    .hero-trust .trust-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.88rem; font-weight: 600; color: rgba(20,20,20,0.65);
+    }
+    .hero-trust .trust-item .dot { color: var(--green-dk); font-size: 1.1rem; }
+
+    /* Hero image side */
+    .hero-right {
+      position: relative; height: 100%;
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
+      animation: slideUp .8s .2s cubic-bezier(.25,.46,.45,.94) both;
+    }
+    .hero-img-main {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+    }
+    /* Gradient overlay on image to blend into yellow */
+    .hero-right::before {
       content: '';
-      position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 80px;
+      position: absolute; top: 0; left: 0; bottom: 0; width: 80px;
+      background: linear-gradient(to right, var(--yellow), transparent);
+      z-index: 2;
+    }
+    /* Floating delivery badge */
+    .hero-delivery-badge {
+      position: absolute; bottom: 60px; left: -20px;
+      background: #fff; border-radius: var(--radius);
+      padding: 14px 18px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+      z-index: 4;
+      display: flex; align-items: center; gap: 12px;
+      animation: badgeIn .8s .6s cubic-bezier(.25,.46,.45,.94) both, floatY 3s 1.4s ease-in-out infinite;
+    }
+    @keyframes badgeIn { from{opacity:0;transform:translateX(-30px);} to{opacity:1;transform:none;} }
+    @keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+    .badge-icon { font-size: 2rem; }
+    .badge-text strong { display: block; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.95rem; }
+    .badge-text span { font-size: 0.78rem; color: var(--muted); }
+    /* Rating badge */
+    .hero-rating-badge {
+      position: absolute; top: 80px; right: 30px;
+      background: var(--green); color: #fff; border-radius: var(--radius);
+      padding: 12px 16px;
+      box-shadow: 0 12px 36px rgba(0,134,106,0.35);
+      z-index: 4;
+      text-align: center;
+      animation: badgeIn2 .8s .8s cubic-bezier(.25,.46,.45,.94) both, floatY 3.5s 1.6s ease-in-out infinite;
+    }
+    @keyframes badgeIn2 { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:none;} }
+    .hero-rating-badge .stars { font-size: 1.1rem; margin-bottom: 2px; }
+    .hero-rating-badge strong { display: block; font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.2rem; }
+    .hero-rating-badge small { font-size: 0.72rem; opacity: 0.8; }
+
+    /* Wave separator */
+    .wave-sep {
+      height: 80px; background: var(--yellow);
+      position: relative; overflow: hidden;
+    }
+    .wave-sep::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
       background: var(--white);
       border-radius: 60% 60% 0 0 / 100% 100% 0 0;
     }
 
-    .hero-content {
-      flex: 1; max-width: 580px; z-index: 2;
-      animation: slideUp .8s cubic-bezier(.25,.46,.45,.94) both;
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero h1 {
-      font-family: 'Sora', sans-serif;
-      font-size: clamp(2.6rem, 5vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      color: var(--dark);
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 2rem;
-      opacity: 0.8;
-    }
-
-    .search-bar {
-      display: flex; align-items: center;
-      background: #fff;
-      border-radius: 50px;
-      padding: 6px 6px 6px 20px;
-      gap: 10px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      max-width: 520px;
-    }
-    .search-bar .pin-icon { color: var(--green); font-size: 1.1rem; flex-shrink: 0; }
-    .search-bar input {
-      flex: 1; border: none; outline: none;
-      font-size: 1rem; font-family: 'DM Sans', sans-serif;
-      color: var(--text); background: none;
-    }
-    .search-bar input::placeholder { color: #aaa; }
-    .search-bar .btn-loc {
-      background: var(--green); color: #fff;
-      border: none; border-radius: 50px;
-      padding: 11px 20px; font-weight: 600;
-      cursor: pointer; white-space: nowrap;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      transition: background .2s;
-    }
-    .search-bar .btn-loc:hover { background: var(--green-dk); }
-
-    /* ── Floating Food Animations ──────────────────────────────── */
-    .hero-foods {
-      flex: 1; position: relative; height: 520px;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 2;
-    }
-
-    .food-item {
-      position: absolute;
-      font-size: 3.5rem;
-      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.18));
-      animation: float linear infinite;
-      cursor: default;
-      user-select: none;
-    }
-
-    @keyframes float {
-      0%   { transform: translateY(0px) rotate(0deg) scale(1); }
-      25%  { transform: translateY(-18px) rotate(4deg) scale(1.05); }
-      50%  { transform: translateY(-8px) rotate(-2deg) scale(1); }
-      75%  { transform: translateY(-22px) rotate(3deg) scale(1.03); }
-      100% { transform: translateY(0px) rotate(0deg) scale(1); }
-    }
-
-    /* Cameroonian food emojis positioned around a central plate */
-    .food-center {
-      position: absolute;
-      width: 260px; height: 260px;
-      background: rgba(255,255,255,0.25);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8rem;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      animation: pulse 4s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-      50% { transform: scale(1.03); box-shadow: 0 28px 80px rgba(0,0,0,0.2); }
-    }
-
-    .fi-1  { top: 10%; left: 10%; animation-duration: 3.2s; animation-delay: 0s; }
-    .fi-2  { top: 5%; left: 50%; animation-duration: 3.8s; animation-delay: .4s; }
-    .fi-3  { top: 10%; right: 8%; animation-duration: 3.5s; animation-delay: .8s; }
-    .fi-4  { top: 50%; left: 2%; animation-duration: 4.1s; animation-delay: .2s; }
-    .fi-5  { top: 50%; right: 2%; animation-duration: 3.7s; animation-delay: .6s; }
-    .fi-6  { bottom: 10%; left: 10%; animation-duration: 3.4s; animation-delay: 1s; }
-    .fi-7  { bottom: 5%; left: 45%; animation-duration: 3.9s; animation-delay: .3s; }
-    .fi-8  { bottom: 10%; right: 8%; animation-duration: 3.6s; animation-delay: .7s; }
-
-    /* food label tooltip */
-    .food-item .food-label {
-      position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-      background: var(--dark); color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem; font-weight: 600;
-      padding: 3px 10px; border-radius: 20px;
-      white-space: nowrap; opacity: 0;
-      transition: opacity .2s;
-      pointer-events: none;
-    }
-    .food-item:hover .food-label { opacity: 1; }
-
-    /* ── Categories strip ──────────────────────────────────────── */
+    /* ── CATEGORIES ── */
     .categories {
-      padding: 60px 5% 40px;
-      text-align: center;
+      padding: 60px 6% 50px;
+      background: var(--white);
     }
-    .categories h2 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.8rem; font-weight: 700;
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--green); text-transform: uppercase; margin-bottom: .6rem;
+    }
+    .section-title {
+      font-family: 'Sora', sans-serif; font-size: clamp(1.7rem,2.8vw,2.4rem);
+      font-weight: 800; letter-spacing: -0.03em; margin-bottom: 2rem;
+    }
+    .cat-scroll {
+      display: flex; gap: 12px; overflow-x: auto;
+      padding-bottom: 4px; scrollbar-width: none;
+    }
+    .cat-scroll::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--gray); border: 2px solid transparent;
+      border-radius: 50px; padding: 11px 20px;
+      cursor: pointer; white-space: nowrap;
+      font-weight: 600; font-size: 0.9rem;
+      transition: all .22s;
+      flex-shrink: 0;
+    }
+    .cat-pill img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+    .cat-pill:hover, .cat-pill.active {
+      background: var(--yellow-lt); border-color: var(--yellow-dk);
+      transform: translateY(-2px);
+    }
+    .cat-pill.active { background: var(--yellow); border-color: var(--yellow-dk); }
+
+    /* ── FEATURED RESTAURANTS ── */
+    .restaurants-section {
+      padding: 60px 6%;
+      background: var(--white);
+    }
+    .section-row {
+      display: flex; align-items: flex-end; justify-content: space-between;
       margin-bottom: 2rem;
     }
-    .cat-grid {
-      display: flex; gap: 16px;
-      overflow-x: auto; padding-bottom: 8px;
-      justify-content: center; flex-wrap: wrap;
+    .see-all {
+      background: none; border: none; font-family: 'DM Sans', sans-serif;
+      font-weight: 600; font-size: 0.9rem; color: var(--green);
+      cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
     }
-    .cat-chip {
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      background: var(--gray);
-      border: 2px solid transparent;
-      border-radius: var(--radius);
-      padding: 16px 22px;
-      cursor: pointer; transition: all .2s;
-      min-width: 90px;
-      font-weight: 600; font-size: 0.85rem;
+    .rest-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
     }
-    .cat-chip .icon { font-size: 2rem; }
-    .cat-chip:hover, .cat-chip.active {
-      border-color: var(--green);
+    .rest-card {
+      border-radius: var(--radius-lg); overflow: hidden;
       background: var(--white);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,134,106,0.15);
+      border: 1px solid var(--gray2);
+      cursor: pointer;
+      transition: all .28s cubic-bezier(.25,.46,.45,.94);
     }
-
-    /* ── 3 Roles Section ───────────────────────────────────────── */
-    .roles-section {
-      background: var(--gray);
-      padding: 80px 5%;
-      position: relative;
-      overflow: hidden;
+    .rest-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.11);
+      border-color: transparent;
     }
-
-    /* Yellow address bar at top of roles section */
-    .roles-address-bar {
-      background: var(--yellow);
-      padding: 18px 5%;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 0;
+    .rest-img {
+      width: 100%; height: 170px;
+      object-fit: cover; display: block;
+      transition: transform .4s ease;
     }
-    .roles-address-bar .search-mini {
-      display: flex; align-items: center;
-      background: #fff;
-      border-radius: 50px;
-      padding: 12px 20px;
-      gap: 10px;
-      width: 100%; max-width: 600px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    }
-    .roles-address-bar input {
-      flex: 1; border: none; outline: none;
-      font-size: 1rem; font-family: 'DM Sans', sans-serif;
-    }
-    .arrow-btn {
-      background: none; border: none;
-      font-size: 1.4rem; cursor: pointer; color: var(--muted);
-    }
-
-    .roles-title {
-      text-align: center;
-      font-family: 'Sora', sans-serif;
-      font-size: 2rem; font-weight: 700;
-      margin-bottom: 3rem;
-      padding-top: 60px;
-    }
-
-    .roles-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      max-width: 1100px; margin: 0 auto;
-    }
-
-    .role-card {
-      display: flex; flex-direction: column;
-      align-items: center; text-align: center;
-      padding: 2rem 1.5rem;
-      animation: fadeUp .6s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .role-card:nth-child(2) { animation-delay: .15s; }
-    .role-card:nth-child(3) { animation-delay: .3s; }
-
-    .role-img-wrap {
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-      position: relative;
-      background: var(--green);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      transition: transform .3s;
-    }
-    .role-card:hover .role-img-wrap { transform: scale(1.06); }
-
-    /* Decorative teal blob behind circle like Glovo */
-    .role-img-wrap::before {
-      content: '';
-      position: absolute;
-      width: 220px; height: 220px;
-      background: var(--green-lt);
-      border-radius: 50%;
-      bottom: -30px; right: -30px;
-      z-index: 0;
-    }
-    .role-img-wrap .role-emoji {
-      font-size: 6rem; z-index: 1; position: relative;
-    }
-
-    .role-card h3 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.35rem; font-weight: 700;
-      margin-bottom: .75rem;
-    }
-    .role-card p {
-      color: var(--muted); font-size: 0.95rem;
-      line-height: 1.6; margin-bottom: 1.5rem;
-      max-width: 280px;
-    }
-    .btn-register {
-      background: var(--green-dk); color: #fff;
-      border: none; border-radius: 50px;
-      padding: 13px 28px; font-weight: 700;
-      cursor: pointer; font-size: 0.95rem;
-      font-family: 'DM Sans', sans-serif;
-      transition: all .25s;
-      letter-spacing: 0.01em;
-    }
-    .btn-register:hover {
-      background: var(--green);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,134,106,0.3);
-    }
-
-    /* ── How it works ──────────────────────────────────────────── */
-    .how-section {
-      padding: 80px 5%;
-      background: var(--white);
-    }
-    .section-header {
-      text-align: center; margin-bottom: 3rem;
-    }
-    .section-header h2 {
-      font-family: 'Sora', sans-serif;
-      font-size: 2.2rem; font-weight: 800;
-      margin-bottom: .5rem;
-    }
-    .section-header p { color: var(--muted); font-size: 1.05rem; }
-
-    .steps-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 2rem; max-width: 900px; margin: 0 auto;
-    }
-    .step {
-      text-align: center; padding: 2rem;
-      background: var(--gray);
-      border-radius: var(--radius-lg);
-      transition: transform .25s, box-shadow .25s;
-    }
-    .step:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-    }
-    .step-num {
-      width: 52px; height: 52px;
+    .rest-card:hover .rest-img { transform: scale(1.06); }
+    .rest-img-wrap { overflow: hidden; position: relative; }
+    .rest-tag {
+      position: absolute; top: 12px; left: 12px;
       background: var(--yellow); color: var(--dark);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Sora', sans-serif;
-      font-size: 1.3rem; font-weight: 800;
-      margin: 0 auto 1rem;
+      border-radius: 50px; padding: 4px 12px;
+      font-size: 0.72rem; font-weight: 700;
     }
-    .step .icon { font-size: 2.5rem; margin-bottom: .75rem; }
-    .step h3 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem;
+    .rest-info { padding: 14px 16px 16px; }
+    .rest-info h4 {
+      font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem;
+      margin-bottom: 4px; letter-spacing: -0.01em;
     }
-    .step p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+    .rest-meta {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: var(--muted); margin-bottom: 8px;
+    }
+    .rest-meta .rating { color: var(--dark); font-weight: 600; }
+    .rest-meta .star { color: #f59e0b; }
+    .rest-price-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .rest-deliver { font-size: 0.8rem; color: var(--green); font-weight: 600; }
+    .rest-min { font-size: 0.8rem; color: var(--muted); }
 
-    /* ── Popular Dishes ────────────────────────────────────────── */
+    /* ── DISHES ── */
     .dishes-section {
-      padding: 80px 5%;
+      padding: 70px 6%;
       background: var(--gray);
     }
     .dishes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.25rem;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
       margin-top: 2rem;
     }
     .dish-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: all .25s;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      background: var(--white); border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer;
+      transition: all .28s cubic-bezier(.25,.46,.45,.94);
+      border: 1px solid transparent;
     }
     .dish-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.1);
     }
+    .dish-img-wrap { position: relative; overflow: hidden; }
     .dish-img {
-      height: 140px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 5rem;
-      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-dk) 100%);
+      width: 100%; height: 180px; object-fit: cover;
+      display: block; transition: transform .4s ease;
     }
-    .dish-info { padding: 14px; }
-    .dish-info h4 {
-      font-family: 'Sora', sans-serif;
-      font-size: 0.95rem; font-weight: 700;
-      margin-bottom: 4px;
+    .dish-card:hover .dish-img { transform: scale(1.08); }
+    .dish-add {
+      position: absolute; bottom: 12px; right: 12px;
+      width: 36px; height: 36px;
+      background: var(--green); color: #fff;
+      border-radius: 50%; border: none;
+      font-size: 1.3rem; line-height: 36px; text-align: center;
+      cursor: pointer; opacity: 0;
+      transition: all .25s;
+      box-shadow: 0 4px 16px rgba(0,134,106,0.4);
     }
-    .dish-info p { font-size: 0.8rem; color: var(--muted); }
-    .dish-price {
-      font-size: 0.95rem; font-weight: 700;
-      color: var(--green); margin-top: 8px;
+    .dish-card:hover .dish-add { opacity: 1; transform: scale(1.1); }
+    .dish-body { padding: 14px 16px 16px; }
+    .dish-body h4 {
+      font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.97rem;
+      margin-bottom: 3px;
+    }
+    .dish-body p { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+    .dish-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dish-price { font-weight: 700; font-size: 0.95rem; color: var(--green); }
+    .dish-rest { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      padding: 80px 6%;
+      background: var(--white);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .how-left .section-label { margin-bottom: .6rem; }
+    .how-left .section-title { margin-bottom: 1.2rem; }
+    .how-left p {
+      color: var(--muted); line-height: 1.75; font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .steps-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 1.25rem; border-radius: var(--radius);
+      background: var(--gray); transition: all .25s;
+      cursor: default;
+    }
+    .step-item:hover { background: var(--yellow-lt); transform: translateX(6px); }
+    .step-num {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--yellow); color: var(--dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.1rem;
+    }
+    .step-text strong {
+      display: block; font-family: 'Sora', sans-serif;
+      font-weight: 700; font-size: 1rem; margin-bottom: 4px;
+    }
+    .step-text span { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+    /* How right: stacked phone mockup area */
+    .how-right {
+      position: relative; border-radius: var(--radius-xl);
+      overflow: hidden; aspect-ratio: 4/5;
+    }
+    .how-right img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+      border-radius: var(--radius-xl);
+    }
+    .how-right .overlay-card {
+      position: absolute; bottom: 24px; left: 24px; right: 24px;
+      background: rgba(255,255,255,0.96);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .oc-icon { font-size: 2.2rem; }
+    .oc-text strong { display: block; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.95rem; }
+    .oc-text span { font-size: 0.8rem; color: var(--muted); }
+    .oc-badge {
+      margin-left: auto; background: var(--green); color: #fff;
+      border-radius: 50px; padding: 6px 14px;
+      font-size: 0.8rem; font-weight: 700; white-space: nowrap;
     }
 
-    /* ── App Download ──────────────────────────────────────────── */
+    /* ── ROLES ── */
+    .roles-section {
+      padding: 80px 6%;
+      background: var(--dark);
+      color: #fff;
+    }
+    .roles-section .section-label { color: var(--yellow); }
+    .roles-section .section-title { color: #fff; margin-bottom: 3rem; }
+    .roles-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .role-card {
+      border-radius: var(--radius-lg); overflow: hidden;
+      position: relative; aspect-ratio: 3/4;
+      cursor: pointer;
+      transition: transform .3s ease;
+    }
+    .role-card:hover { transform: translateY(-8px); }
+    .role-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform .5s ease;
+    }
+    .role-card:hover img { transform: scale(1.06); }
+    .role-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+    }
+    .role-body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2rem 1.75rem;
+    }
+    .role-chip {
+      display: inline-block;
+      background: var(--yellow); color: var(--dark);
+      border-radius: 50px; padding: 4px 14px;
+      font-size: 0.75rem; font-weight: 700;
+      margin-bottom: .75rem; letter-spacing: 0.04em;
+    }
+    .role-body h3 {
+      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.3rem;
+      color: #fff; margin-bottom: .5rem; letter-spacing: -0.02em;
+    }
+    .role-body p { font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.25rem; }
+    .btn-role {
+      background: #fff; color: var(--dark);
+      border: none; border-radius: 50px;
+      padding: 11px 24px; font-family: 'DM Sans', sans-serif;
+      font-weight: 700; font-size: 0.88rem;
+      cursor: pointer; transition: all .2s;
+    }
+    .btn-role:hover { background: var(--yellow); transform: translateY(-1px); }
+
+    /* ── APP SECTION ── */
     .app-section {
-      padding: 80px 5%;
-      background: var(--white);
-      display: flex; align-items: center; gap: 4rem;
+      padding: 80px 6%;
+      background: var(--yellow);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      overflow: hidden; position: relative;
     }
-    .app-text { flex: 1; }
-    .app-text h2 {
-      font-family: 'Sora', sans-serif;
-      font-size: 2.2rem; font-weight: 800;
-      margin-bottom: 1rem;
+    .app-section::before {
+      content: '';
+      position: absolute; width: 500px; height: 500px;
+      border-radius: 50%; background: rgba(0,0,0,0.05);
+      top: -200px; right: -100px;
     }
-    .app-text p { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 2rem; }
+    .app-left .section-title { color: var(--dark); }
+    .app-left p { color: rgba(20,20,20,0.7); line-height: 1.75; margin-bottom: 2.5rem; }
     .store-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
     .store-btn {
       display: flex; align-items: center; gap: 12px;
       background: var(--dark); color: #fff;
       border: none; border-radius: var(--radius);
-      padding: 12px 22px; cursor: pointer;
+      padding: 13px 22px; cursor: pointer;
       font-family: 'DM Sans', sans-serif;
-      transition: all .2s;
+      transition: all .25s;
     }
-    .store-btn:hover { background: #333; transform: translateY(-2px); }
-    .store-btn .store-icon { font-size: 1.8rem; }
-    .store-btn .store-text small { display: block; font-size: 0.7rem; opacity: 0.7; }
-    .store-btn .store-text span { font-weight: 700; font-size: 1rem; }
-    .app-visual {
-      flex: 1; display: flex; justify-content: center; align-items: center;
-      font-size: 10rem;
-      animation: float 4s ease-in-out infinite;
+    .store-btn:hover { background: #333; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .store-btn .si { font-size: 1.7rem; }
+    .store-btn .st small { display: block; font-size: 0.68rem; opacity: 0.65; }
+    .store-btn .st strong { font-size: 0.98rem; }
+    .app-right {
+      position: relative; display: flex; justify-content: center;
+    }
+    .app-phone {
+      width: 280px; border-radius: 36px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+      position: relative; z-index: 2;
+      animation: floatY 4s ease-in-out infinite;
+    }
+    .app-phone-bg {
+      width: 240px; border-radius: 32px;
+      position: absolute; top: 30px; left: 50%;
+      transform: translateX(-10px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+      opacity: 0.6; z-index: 1;
+      animation: floatY 4s .5s ease-in-out infinite;
     }
 
-    /* ── Footer ────────────────────────────────────────────────── */
+    /* ── FOOTER ── */
     .footer-wave {
-      background: var(--white);
+      height: 80px; background: var(--yellow);
       position: relative;
     }
-    .footer-wave::before {
+    .footer-wave::after {
       content: '';
-      display: block;
-      height: 80px;
-      background: var(--dark2);
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+      background: var(--dark);
       border-radius: 60% 60% 0 0 / 100% 100% 0 0;
     }
-
     footer {
-      background: var(--dark2);
-      color: #fff;
-      padding: 20px 5% 40px;
+      background: var(--dark); color: #fff;
+      padding: 20px 6% 50px;
     }
-
     .footer-logo {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.8rem; font-weight: 800;
-      margin-bottom: 2.5rem;
-      display: flex; align-items: center; gap: 6px;
+      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.8rem;
+      display: flex; align-items: center; gap: 4px; margin-bottom: 3rem;
     }
-    .footer-logo span { color: var(--yellow); }
-    .footer-logo .dot { color: var(--green); }
-
+    .footer-logo .accent { color: var(--yellow); }
+    .footer-logo .pin-dot {
+      width: 10px; height: 10px; background: var(--green-lt);
+      border-radius: 50%; margin-left: 4px; margin-bottom: 12px;
+    }
     .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 3rem;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
     }
-
     .footer-col h4 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1rem; font-weight: 700;
-      color: var(--green-lt);
-      margin-bottom: 1.2rem;
+      font-family: 'Sora', sans-serif; font-size: 0.85rem; font-weight: 700;
+      color: var(--green-lt); text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 1.2rem;
     }
+    .footer-col-brand p {
+      color: rgba(255,255,255,0.45); font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.5rem;
+    }
+    .social-links { display: flex; gap: 10px; }
+    .social-link {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; text-decoration: none; cursor: pointer;
+      transition: all .2s;
+    }
+    .social-link:hover { background: var(--green-lt); transform: translateY(-2px); }
     .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: .6rem; }
+    .footer-col ul li { margin-bottom: .65rem; }
     .footer-col ul li a {
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color .2s;
+      text-decoration: none; color: rgba(255,255,255,0.5);
+      font-size: 0.9rem; transition: color .2s;
     }
     .footer-col ul li a:hover { color: var(--yellow); }
-
-    .footer-col-brand p {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.9rem; line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-
-    .social-links { display: flex; gap: 12px; }
-    .social-link {
-      width: 38px; height: 38px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; cursor: pointer;
-      transition: all .2s;
-      text-decoration: none;
-    }
-    .social-link:hover { background: var(--green); transform: translateY(-2px); }
-
     .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 1.5rem;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
     }
-    .footer-bottom p { color: rgba(255,255,255,0.4); font-size: 0.85rem; }
-
-    .app-store-footer {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--white);
-      color: var(--dark);
-      border-radius: 10px;
-      padding: 8px 16px;
-      cursor: pointer;
-      font-weight: 600; font-size: 0.85rem;
-      transition: opacity .2s;
-      text-decoration: none;
+    .footer-bottom p { color: rgba(255,255,255,0.3); font-size: 0.82rem; }
+    .footer-bottom a {
+      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6);
+      text-decoration: none; font-size: 0.82rem; font-weight: 600;
+      padding: 8px 18px; border-radius: 50px; transition: all .2s;
     }
-    .app-store-footer:hover { opacity: 0.85; }
+    .footer-bottom a:hover { background: var(--green); color: #fff; }
 
-    /* ── Scroll animations ────────────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    /* ── Mobile ───────────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .hero { flex-direction: column; gap: 2rem; }
-      .hero-foods { height: 320px; }
-      .food-center { width: 180px; height: 180px; font-size: 6rem; }
-      .food-item { font-size: 2.5rem; }
-      .roles-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
-      .steps-grid { grid-template-columns: 1fr; max-width: 380px; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-      .app-section { flex-direction: column; text-align: center; }
-      .store-btns { justify-content: center; }
-      .nav-links { display: none; }
-    }
-
-    @media (max-width: 540px) {
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; align-items: flex-start; }
-    }
-
-    /* ── Auth Modal ───────────────────────────────────────────── */
+    /* ── MODAL ── */
     .modal-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.55);
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.6);
       align-items: center; justify-content: center;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
     }
     .modal-overlay.open { display: flex; }
     .modal {
-      background: #fff;
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      width: 100%; max-width: 420px;
+      background: #fff; border-radius: var(--radius-xl);
+      padding: 2.75rem; width: 100%; max-width: 440px;
       position: relative;
-      animation: modalIn .35s cubic-bezier(.25,.46,.45,.94) both;
+      animation: modalPop .35s cubic-bezier(.25,.46,.45,.94) both;
     }
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(.92) translateY(20px); }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(.9) translateY(20px); }
       to   { opacity: 1; transform: none; }
     }
     .modal-close {
-      position: absolute; top: 16px; right: 20px;
-      background: none; border: none;
-      font-size: 1.4rem; cursor: pointer; color: var(--muted);
+      position: absolute; top: 18px; right: 20px;
+      background: var(--gray); border: none; border-radius: 50%;
+      width: 34px; height: 34px; font-size: 1rem;
+      cursor: pointer; color: var(--muted); display: flex;
+      align-items: center; justify-content: center;
+      transition: background .2s;
     }
+    .modal-close:hover { background: var(--gray2); }
     .modal h2 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.6rem; font-weight: 700;
-      margin-bottom: .5rem;
+      font-family: 'Sora', sans-serif; font-size: 1.65rem; font-weight: 800;
+      margin-bottom: .4rem; letter-spacing: -0.02em;
     }
-    .modal p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .modal p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.75rem; }
     .form-group { margin-bottom: 1rem; }
-    .form-group label {
-      display: block; font-weight: 600;
-      font-size: 0.85rem; margin-bottom: 6px;
-    }
+    .form-group label { display: block; font-weight: 600; font-size: 0.83rem; margin-bottom: 6px; }
     .form-group input, .form-group select {
       width: 100%; border: 2px solid var(--gray2);
-      border-radius: 10px; padding: 11px 14px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem; color: var(--text);
-      outline: none; transition: border-color .2s;
+      border-radius: 12px; padding: 12px 16px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text);
+      outline: none; transition: border-color .2s; background: var(--gray);
     }
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--green);
-    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--green); background: #fff; }
     .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
     .btn-full {
-      width: 100%; background: var(--green); color: #fff;
-      border: none; border-radius: 50px;
-      padding: 14px; font-weight: 700;
-      cursor: pointer; font-size: 1rem;
-      font-family: 'DM Sans', sans-serif;
-      transition: background .2s;
+      width: 100%; background: var(--green); color: #fff; border: none;
+      border-radius: 50px; padding: 15px; font-weight: 700; font-size: 1rem;
+      font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s;
       margin-top: .5rem;
     }
     .btn-full:hover { background: var(--green-dk); }
-    .modal-switch {
-      text-align: center; margin-top: 1.2rem;
-      font-size: 0.9rem; color: var(--muted);
-    }
+    .modal-switch { text-align: center; margin-top: 1.2rem; font-size: 0.88rem; color: var(--muted); }
     .modal-switch a { color: var(--green); font-weight: 600; cursor: pointer; }
+    .modal-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 1.25rem 0; color: var(--muted); font-size: 0.82rem;
+    }
+    .modal-divider::before, .modal-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--gray2);
+    }
+    .btn-social {
+      width: 100%; background: var(--gray); color: var(--text);
+      border: 2px solid var(--gray2); border-radius: 50px;
+      padding: 13px; font-family: 'DM Sans', sans-serif;
+      font-weight: 600; font-size: 0.95rem; cursor: pointer;
+      transition: all .2s; display: flex; align-items: center;
+      justify-content: center; gap: 10px; margin-bottom: .75rem;
+    }
+    .btn-social:hover { border-color: var(--green); background: #fff; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(36px);
+      transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-left {
+      opacity: 0; transform: translateX(-36px);
+      transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal-left.visible { opacity: 1; transform: none; }
+    .reveal-right {
+      opacity: 0; transform: translateX(36px);
+      transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal-right.visible { opacity: 1; transform: none; }
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+    .delay-4 { transition-delay: .4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .rest-grid, .dishes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-bottom: 0; }
+      .hero-right { height: 380px; }
+      .how-section { grid-template-columns: 1fr; }
+      .how-right { display: none; }
+      .roles-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .app-section { grid-template-columns: 1fr; }
+      .app-right { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 640px) {
+      .rest-grid, .dishes-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ── Nav ──────────────────────────────────────────────────────── -->
-<nav>
-  <a class="nav-logo" href="#">
-    Chop<span>Fast</span><span class="pin">📍</span>
-  </a>
+<!-- ── NAV ──────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a class="nav-logo" href="#">Chop<span class="accent">Fast</span><span class="pin-dot"></span></a>
   <div class="nav-links">
     <a href="#how">How it works</a>
-    <a href="#dishes">Popular Dishes</a>
+    <a href="#dishes">Dishes</a>
     <a href="#roles">Partners</a>
+    <a href="#">Cities</a>
   </div>
   <div class="nav-cta">
-    <button class="btn-outline" onclick="openModal('login')">Sign In</button>
-    <button class="btn-primary" onclick="openModal('register')">Get Started</button>
+    <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+    <button class="btn-pill" onclick="openModal('register')">Order Now</button>
   </div>
 </nav>
 
-<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<!-- ── HERO ──────────────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="hero-content">
-    <h1>Food delivery<br/>and more</h1>
-    <p>Eru, Ndolé, Poulet DG, groceries, pharmacies — anything!</p>
-    <div class="search-bar">
-      <span class="pin-icon">📍</span>
-      <input type="text" placeholder="What's your address?" />
-      <button class="btn-loc">Use current location</button>
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span class="blink"></span>
+      Now delivering in Yaoundé, Douala &amp; more
+    </div>
+    <h1>Food delivery<br/>and <em>everything</em><br/>you love</h1>
+    <p class="hero-sub">Ndolé, Eru, Poulet DG, groceries,<br/>pharmacies — at your door in minutes.</p>
+    <div class="hero-search">
+      <span class="loc-icon">📍</span>
+      <input type="text" placeholder="Enter your delivery address…" />
+      <button class="btn-find">Find food</button>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="dot">✓</span> Free delivery on first order</div>
+      <div class="trust-item"><span class="dot">✓</span> 30 min or less</div>
+      <div class="trust-item"><span class="dot">✓</span> 200+ restaurants</div>
     </div>
   </div>
 
-  <div class="hero-foods">
-    <div class="food-center">🍲</div>
-    <div class="food-item fi-1">🥘<span class="food-label">Ndolé</span></div>
-    <div class="food-item fi-2">🫕<span class="food-label">Eru</span></div>
-    <div class="food-item fi-3">🍗<span class="food-label">Poulet DG</span></div>
-    <div class="food-item fi-4">🥜<span class="food-label">Koki</span></div>
-    <div class="food-item fi-5">🍚<span class="food-label">Achu Soup</span></div>
-    <div class="food-item fi-6">🐟<span class="food-label">Bongo</span></div>
-    <div class="food-item fi-7">🌿<span class="food-label">Okok</span></div>
-    <div class="food-item fi-8">🥗<span class="food-label">Sangah</span></div>
-  </div>
-</section>
-
-<!-- ── Category Chips ────────────────────────────────────────────── -->
-<section class="categories">
-  <h2>What are you craving?</h2>
-  <div class="cat-grid">
-    <div class="cat-chip active" onclick="toggleCat(this)">
-      <span class="icon">🍲</span><span>Cameroonian</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">🍗</span><span>Grills</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">🫕</span><span>Soups</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">🥜</span><span>Snacks</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">🥤</span><span>Drinks</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">🛒</span><span>Groceries</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">💊</span><span>Pharmacy</span>
-    </div>
-    <div class="cat-chip" onclick="toggleCat(this)">
-      <span class="icon">🎂</span><span>Bakery</span>
-    </div>
-  </div>
-</section>
-
-<!-- ── Address Bar + 3 Roles (Glovo-style) ──────────────────────── -->
-<div class="roles-address-bar">
-  <div class="search-mini">
-    <span>📍</span>
-    <input type="text" placeholder="What's your address?" />
-    <button class="arrow-btn">→</button>
-  </div>
-</div>
-
-<section class="roles-section" id="roles">
-  <h2 class="roles-title">Grow with ChopFast</h2>
-  <div class="roles-grid">
-
-    <!-- Rider -->
-    <div class="role-card reveal">
-      <div class="role-img-wrap">
-        <span class="role-emoji">🚴</span>
+  <div class="hero-right">
+    <img class="hero-img-main" src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=900&q=85&auto=format&fit=crop" alt="Delicious food" />
+    <!-- Delivery time badge -->
+    <div class="hero-delivery-badge">
+      <span class="badge-icon">🚴</span>
+      <div class="badge-text">
+        <strong>On the way!</strong>
+        <span>Arriving in ~22 min</span>
       </div>
-      <h3>Become a Rider</h3>
-      <p>Enjoy flexibility, freedom and competitive earnings by delivering through ChopFast across Cameroon.</p>
-      <button class="btn-register" onclick="openModal('rider')">Register here</button>
     </div>
-
-    <!-- Partner restaurant -->
-    <div class="role-card reveal">
-      <div class="role-img-wrap">
-        <span class="role-emoji">👨‍🍳</span>
-      </div>
-      <h3>Become a Partner</h3>
-      <p>Grow with ChopFast! Our technology and user base can help you boost sales and unlock new opportunities.</p>
-      <button class="btn-register" onclick="openModal('partner')">Register here</button>
-    </div>
-
-    <!-- Careers -->
-    <div class="role-card reveal">
-      <div class="role-img-wrap">
-        <span class="role-emoji">💼</span>
-      </div>
-      <h3>Careers</h3>
-      <p>Ready for an exciting new challenge? If you're ambitious, humble, and love working with others — we want to hear from you!</p>
-      <button class="btn-register" onclick="openModal('career')">Register here</button>
-    </div>
-
-  </div>
-</section>
-
-<!-- ── How it Works ──────────────────────────────────────────────── -->
-<section class="how-section reveal" id="how">
-  <div class="section-header">
-    <h2>How ChopFast works</h2>
-    <p>From your screen to your door in minutes</p>
-  </div>
-  <div class="steps-grid">
-    <div class="step reveal">
-      <div class="step-num">1</div>
-      <div class="icon">📍</div>
-      <h3>Enter your address</h3>
-      <p>Tell us where you are and we'll find the best restaurants and shops near you.</p>
-    </div>
-    <div class="step reveal">
-      <div class="step-num">2</div>
-      <div class="icon">🛒</div>
-      <h3>Choose your meal</h3>
-      <p>Browse local Cameroonian meals, place your order, and customise to your taste.</p>
-    </div>
-    <div class="step reveal">
-      <div class="step-num">3</div>
-      <div class="icon">🚴</div>
-      <h3>Enjoy fast delivery</h3>
-      <p>Your rider picks up and delivers your order — track it live on the map.</p>
+    <!-- Rating badge -->
+    <div class="hero-rating-badge">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <strong>4.9</strong>
+      <small>12k+ reviews</small>
     </div>
   </div>
 </section>
 
-<!-- ── Popular Cameroonian Dishes ─────────────────────────────────── -->
-<section class="dishes-section reveal" id="dishes">
-  <div class="section-header">
-    <h2>Popular Cameroonian Dishes</h2>
-    <p>Your favourite local meals, delivered fast</p>
+<!-- Wave -->
+<div class="wave-sep"></div>
+
+<!-- ── CATEGORIES ── -->
+<section class="categories reveal">
+  <p class="section-label">Browse categories</p>
+  <h2 class="section-title">What are you craving?</h2>
+  <div class="cat-scroll">
+    <div class="cat-pill active" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=56&q=80&auto=format&fit=crop" alt="Cameroonian" />
+      All
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=56&q=80&auto=format&fit=crop" alt="Cameroonian" />
+      Cameroonian
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c2?w=56&q=80&auto=format&fit=crop" alt="Grills" />
+      Grills &amp; BBQ
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=56&q=80&auto=format&fit=crop" alt="Soups" />
+      Soups
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=56&q=80&auto=format&fit=crop" alt="Rice" />
+      Rice Dishes
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1621696685827-b9bbd7b8f6e6?w=56&q=80&auto=format&fit=crop" alt="Drinks" />
+      Drinks
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=56&q=80&auto=format&fit=crop" alt="Groceries" />
+      Groceries
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=56&q=80&auto=format&fit=crop" alt="Pharmacy" />
+      Pharmacy
+    </div>
+    <div class="cat-pill" onclick="toggleCat(this)">
+      <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=56&q=80&auto=format&fit=crop" alt="Bakery" />
+      Bakery
+    </div>
+  </div>
+</section>
+
+<!-- ── RESTAURANTS ── -->
+<section class="restaurants-section">
+  <div class="section-row reveal">
+    <div>
+      <p class="section-label">Near you</p>
+      <h2 class="section-title">Top restaurants</h2>
+    </div>
+    <button class="see-all">See all</button>
+  </div>
+  <div class="rest-grid">
+    <div class="rest-card reveal delay-1">
+      <div class="rest-img-wrap">
+        <img class="rest-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&q=80&auto=format&fit=crop" alt="Restaurant" />
+        <span class="rest-tag">🔥 Popular</span>
+      </div>
+      <div class="rest-info">
+        <h4>Chez Mama Biya</h4>
+        <div class="rest-meta">
+          <span class="rating"><span class="star">★</span> 4.8</span>
+          <span>·</span><span>Cameroonian</span>
+        </div>
+        <div class="rest-price-row">
+          <span class="rest-deliver">Free delivery</span>
+          <span class="rest-min">20–30 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="rest-card reveal delay-2">
+      <div class="rest-img-wrap">
+        <img class="rest-img" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&q=80&auto=format&fit=crop" alt="Restaurant" />
+        <span class="rest-tag">🆕 New</span>
+      </div>
+      <div class="rest-info">
+        <h4>Le Grill du Quartier</h4>
+        <div class="rest-meta">
+          <span class="rating"><span class="star">★</span> 4.6</span>
+          <span>·</span><span>Grills &amp; BBQ</span>
+        </div>
+        <div class="rest-price-row">
+          <span class="rest-deliver">500 XAF delivery</span>
+          <span class="rest-min">25–40 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="rest-card reveal delay-3">
+      <div class="rest-img-wrap">
+        <img class="rest-img" src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=500&q=80&auto=format&fit=crop" alt="Restaurant" />
+        <span class="rest-tag">⚡ Fast</span>
+      </div>
+      <div class="rest-info">
+        <h4>Baobab Kitchen</h4>
+        <div class="rest-meta">
+          <span class="rating"><span class="star">★</span> 4.7</span>
+          <span>·</span><span>African Cuisine</span>
+        </div>
+        <div class="rest-price-row">
+          <span class="rest-deliver">Free delivery</span>
+          <span class="rest-min">15–25 min</span>
+        </div>
+      </div>
+    </div>
+    <div class="rest-card reveal delay-4">
+      <div class="rest-img-wrap">
+        <img class="rest-img" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&q=80&auto=format&fit=crop" alt="Restaurant" />
+        <span class="rest-tag">💛 Top rated</span>
+      </div>
+      <div class="rest-info">
+        <h4>Saveur du Mfoundi</h4>
+        <div class="rest-meta">
+          <span class="rating"><span class="star">★</span> 4.9</span>
+          <span>·</span><span>Traditional</span>
+        </div>
+        <div class="rest-price-row">
+          <span class="rest-deliver">Free delivery</span>
+          <span class="rest-min">30–45 min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DISHES ── -->
+<section class="dishes-section" id="dishes">
+  <div class="section-row reveal">
+    <div>
+      <p class="section-label">Favourites</p>
+      <h2 class="section-title">Popular Cameroonian dishes</h2>
+    </div>
+    <button class="see-all">See all</button>
   </div>
   <div class="dishes-grid">
-    <div class="dish-card">
-      <div class="dish-img">🫕</div>
-      <div class="dish-info">
-        <h4>Eru & Waterfufu</h4>
-        <p>Traditional forest vegetable</p>
-        <div class="dish-price">From 1,500 XAF</div>
+    <div class="dish-card reveal delay-1">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80&auto=format&fit=crop" alt="Ndolé" />
+        <button class="dish-add">+</button>
       </div>
-    </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#a8e6cf,#3d9970)">🥘</div>
-      <div class="dish-info">
+      <div class="dish-body">
         <h4>Ndolé</h4>
-        <p>Bitter leaf with groundnuts</p>
-        <div class="dish-price">From 1,200 XAF</div>
+        <p>Bitter leaf with groundnuts &amp; prawns</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 1,200 XAF</span>
+          <span class="dish-rest">Chez Mama Biya</span>
+        </div>
       </div>
     </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#ffd3a5,#fd7a3c)">🍗</div>
-      <div class="dish-info">
+    <div class="dish-card reveal delay-2">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80&auto=format&fit=crop" alt="Eru" />
+        <button class="dish-add">+</button>
+      </div>
+      <div class="dish-body">
+        <h4>Eru &amp; Waterfufu</h4>
+        <p>Wild forest vegetable with fufu</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 1,500 XAF</span>
+          <span class="dish-rest">Saveur du Mfoundi</span>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card reveal delay-3">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1598103442097-8b74394b95c2?w=500&q=80&auto=format&fit=crop" alt="Poulet DG" />
+        <button class="dish-add">+</button>
+      </div>
+      <div class="dish-body">
         <h4>Poulet DG</h4>
-        <p>Director General chicken</p>
-        <div class="dish-price">From 2,500 XAF</div>
+        <p>Director General chicken with plantains</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 2,500 XAF</span>
+          <span class="dish-rest">Le Grill du Quartier</span>
+        </div>
       </div>
     </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#d4fc79,#96e6a1)">🌿</div>
-      <div class="dish-info">
-        <h4>Okok</h4>
-        <p>Gnetum africanum leaves</p>
-        <div class="dish-price">From 800 XAF</div>
+    <div class="dish-card reveal delay-4">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80&auto=format&fit=crop" alt="Achu" />
+        <button class="dish-add">+</button>
       </div>
-    </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#f7971e,#ffd200)">🥜</div>
-      <div class="dish-info">
-        <h4>Koki</h4>
-        <p>Black-eyed pea cake</p>
-        <div class="dish-price">From 600 XAF</div>
-      </div>
-    </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#43cea2,#185a9d)">🍚</div>
-      <div class="dish-info">
+      <div class="dish-body">
         <h4>Achu Soup</h4>
-        <p>Pounded cocoyam & yellow soup</p>
-        <div class="dish-price">From 1,000 XAF</div>
+        <p>Pounded cocoyam &amp; yellow palm soup</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 1,000 XAF</span>
+          <span class="dish-rest">Baobab Kitchen</span>
+        </div>
       </div>
     </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#f953c6,#b91d73)">🐟</div>
-      <div class="dish-info">
+    <div class="dish-card reveal delay-1">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&q=80&auto=format&fit=crop" alt="Fish" />
+        <button class="dish-add">+</button>
+      </div>
+      <div class="dish-body">
         <h4>Mbanga Soup</h4>
-        <p>Palm nut soup with fish</p>
-        <div class="dish-price">From 1,800 XAF</div>
+        <p>Palm nut soup with smoked fish</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 1,800 XAF</span>
+          <span class="dish-rest">Chez Mama Biya</span>
+        </div>
       </div>
     </div>
-    <div class="dish-card">
-      <div class="dish-img" style="background:linear-gradient(135deg,#c94b4b,#4b134f)">🥗</div>
-      <div class="dish-info">
+    <div class="dish-card reveal delay-2">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80&auto=format&fit=crop" alt="Koki" />
+        <button class="dish-add">+</button>
+      </div>
+      <div class="dish-body">
+        <h4>Koki</h4>
+        <p>Steamed black-eyed pea cake</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 600 XAF</span>
+          <span class="dish-rest">Saveur du Mfoundi</span>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card reveal delay-3">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80&auto=format&fit=crop" alt="Rice" />
+        <button class="dish-add">+</button>
+      </div>
+      <div class="dish-body">
+        <h4>Riz Sauté</h4>
+        <p>Cameroonian stir-fried rice</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 900 XAF</span>
+          <span class="dish-rest">Baobab Kitchen</span>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card reveal delay-4">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80&auto=format&fit=crop" alt="Sangah" />
+        <button class="dish-add">+</button>
+      </div>
+      <div class="dish-body">
         <h4>Sangah</h4>
-        <p>Maize, plantain & cassava</p>
-        <div class="dish-price">From 700 XAF</div>
+        <p>Maize, plantain &amp; cassava mix</p>
+        <div class="dish-footer">
+          <span class="dish-price">From 700 XAF</span>
+          <span class="dish-rest">Le Grill du Quartier</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── App Download ──────────────────────────────────────────────── -->
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section" id="how">
+  <div class="how-left">
+    <p class="section-label reveal">How it works</p>
+    <h2 class="section-title reveal delay-1">From your screen<br/>to your door</h2>
+    <p class="reveal delay-2">In just a few taps, your favourite Cameroonian meal is on its way. Our riders know the streets and we guarantee fast, fresh delivery.</p>
+    <div class="steps-list">
+      <div class="step-item reveal delay-1">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Enter your address</strong>
+          <span>Tell us where you are and we'll show the best nearby restaurants and shops.</span>
+        </div>
+      </div>
+      <div class="step-item reveal delay-2">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Choose your meal</strong>
+          <span>Browse menus, customise your order and pay securely in seconds.</span>
+        </div>
+      </div>
+      <div class="step-item reveal delay-3">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Enjoy fast delivery</strong>
+          <span>Track your rider live on the map. Sit back and get ready to eat!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="how-right reveal-right">
+    <img src="https://images.unsplash.com/photo-1619881585874-4a5c6f1a1c2e?w=700&q=80&auto=format&fit=crop" alt="Food delivery" />
+    <div class="overlay-card">
+      <span class="oc-icon">🚴</span>
+      <div class="oc-text">
+        <strong>Jean-Pierre is on the way</strong>
+        <span>Your order is 2.3 km away</span>
+      </div>
+      <span class="oc-badge">Live</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROLES / PARTNERS ── -->
+<section class="roles-section" id="roles">
+  <p class="section-label reveal">Grow with us</p>
+  <h2 class="section-title reveal delay-1">Join the ChopFast family</h2>
+  <div class="roles-grid">
+    <div class="role-card reveal delay-1">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=85&auto=format&fit=crop" alt="Rider" />
+      <div class="role-overlay"></div>
+      <div class="role-body">
+        <span class="role-chip">🚴 Rider</span>
+        <h3>Become a Rider</h3>
+        <p>Earn on your schedule. Flexibility, freedom and competitive pay across Cameroon.</p>
+        <button class="btn-role" onclick="openModal('rider')">Register now</button>
+      </div>
+    </div>
+    <div class="role-card reveal delay-2">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=85&auto=format&fit=crop" alt="Restaurant Partner" />
+      <div class="role-overlay"></div>
+      <div class="role-body">
+        <span class="role-chip">👨‍🍳 Partner</span>
+        <h3>List Your Restaurant</h3>
+        <p>Reach thousands of customers daily. Our platform grows your sales — fast.</p>
+        <button class="btn-role" onclick="openModal('partner')">Register now</button>
+      </div>
+    </div>
+    <div class="role-card reveal delay-3">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=85&auto=format&fit=crop" alt="Careers" />
+      <div class="role-overlay"></div>
+      <div class="role-body">
+        <span class="role-chip">💼 Careers</span>
+        <h3>Work With Us</h3>
+        <p>Ambitious, humble, collaborative? We're building something big in Cameroon.</p>
+        <button class="btn-role" onclick="openModal('career')">Apply now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── APP DOWNLOAD ── -->
 <section class="app-section reveal">
-  <div class="app-text">
-    <h2>Download the ChopFast app</h2>
-    <p>Order Cameroonian food on the go. Available on iOS and Android. Track your delivery in real time, save your favourite restaurants, and enjoy exclusive deals.</p>
+  <div class="app-left">
+    <p class="section-label">Mobile app</p>
+    <h2 class="section-title">Order on the go.<br/>Anytime, anywhere.</h2>
+    <p>Download ChopFast on your phone to track orders live, unlock exclusive deals, and reorder your favourites in one tap. Available on iOS and Android.</p>
     <div class="store-btns">
       <button class="store-btn">
-        <span class="store-icon">🍎</span>
-        <div class="store-text">
-          <small>Download on the</small>
-          <span>App Store</span>
-        </div>
+        <span class="si">🍎</span>
+        <div class="st"><small>Download on the</small><strong>App Store</strong></div>
       </button>
       <button class="store-btn">
-        <span class="store-icon">▶️</span>
-        <div class="store-text">
-          <small>Get it on</small>
-          <span>Google Play</span>
-        </div>
+        <span class="si">▶️</span>
+        <div class="st"><small>Get it on</small><strong>Google Play</strong></div>
       </button>
     </div>
   </div>
-  <div class="app-visual">📱</div>
+  <div class="app-right">
+    <img class="app-phone-bg" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80&auto=format&fit=crop" alt="App" />
+    <img class="app-phone" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80&auto=format&fit=crop" alt="App" />
+  </div>
 </section>
 
-<!-- ── Footer ────────────────────────────────────────────────────── -->
+<!-- ── FOOTER ── -->
 <div class="footer-wave"></div>
 <footer>
-  <div class="footer-logo">
-    Chop<span>Fast</span><span class="dot">📍</span>
-  </div>
-
+  <div class="footer-logo">Chop<span class="accent">Fast</span><span class="pin-dot"></span></div>
   <div class="footer-grid">
     <div class="footer-col footer-col-brand">
       <h4>Let's do it together</h4>
-      <p>ChopFast connects Cameroonians with their favourite local meals, groceries, and more — delivered fast to their doorstep.</p>
+      <p>ChopFast connects Cameroonians with their favourite local meals, groceries, and more — delivered fast to your door.</p>
       <div class="social-links">
         <a class="social-link" href="#">📘</a>
         <a class="social-link" href="#">📸</a>
@@ -934,9 +1119,8 @@
         <a class="social-link" href="#">▶️</a>
       </div>
     </div>
-
     <div class="footer-col">
-      <h4>Links of interest</h4>
+      <h4>Company</h4>
       <ul>
         <li><a href="#">About us</a></li>
         <li><a href="#">Careers</a></li>
@@ -945,7 +1129,6 @@
         <li><a href="#">Sustainability</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <h4>For Business</h4>
       <ul>
@@ -955,7 +1138,6 @@
         <li><a href="#">ChopFast for Work</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <h4>Support</h4>
       <ul>
@@ -967,16 +1149,13 @@
       </ul>
     </div>
   </div>
-
   <div class="footer-bottom">
     <p>© 2025 ChopFast. All rights reserved. Made with ❤️ in Cameroon 🇨🇲</p>
-    <a class="app-store-footer" href="#">
-      🍎 Download on the App Store
-    </a>
+    <a href="#">🍎 Download the App</a>
   </div>
 </footer>
 
-<!-- ── Auth / Register Modals ────────────────────────────────────── -->
+<!-- ── MODAL ── -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
   <div class="modal" id="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -985,33 +1164,35 @@
 </div>
 
 <script>
-  /* ── Scroll reveal ─────────────────────────────────────────────── */
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-    { threshold: 0.12 }
+  /* Scroll reveal */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
+    { threshold: 0.1 }
   );
-  revealEls.forEach(el => observer.observe(el));
+  revealEls.forEach(el => io.observe(el));
 
-  /* ── Category chips ────────────────────────────────────────────── */
+  /* Nav scroll */
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* Category pills */
   function toggleCat(el) {
-    document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.cat-pill').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
   }
 
-  /* ── Modal system ──────────────────────────────────────────────── */
+  /* Modal */
   const MODAL_CONTENT = {
     login: `
       <h2>Welcome back 👋</h2>
       <p>Sign in to your ChopFast account</p>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" placeholder="••••••••" />
-      </div>
+      <button class="btn-social">🍎&nbsp; Continue with Apple</button>
+      <button class="btn-social">🌐&nbsp; Continue with Google</button>
+      <div class="modal-divider">or continue with email</div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••" /></div>
       <button class="btn-full">Sign In</button>
       <div class="modal-switch">Don't have an account? <a onclick="openModal('register')">Sign up</a></div>
     `,
@@ -1019,27 +1200,12 @@
       <h2>Create account 🎉</h2>
       <p>Join ChopFast and start ordering local food</p>
       <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="Jean" />
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Mbarga" />
-        </div>
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean" /></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Mbarga" /></div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="tel" placeholder="+237 6XX XXX XXX" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" placeholder="Min 8 characters" />
-      </div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+237 6XX XXX XXX" /></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="Min 8 characters" /></div>
       <button class="btn-full">Create Account</button>
       <div class="modal-switch">Already have an account? <a onclick="openModal('login')">Sign in</a></div>
     `,
@@ -1047,85 +1213,34 @@
       <h2>Become a Rider 🚴</h2>
       <p>Enjoy flexibility and earn competitively delivering with ChopFast</p>
       <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="Jean" />
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Mbarga" />
-        </div>
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean" /></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Mbarga" /></div>
       </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="tel" placeholder="+237 6XX XXX XXX" />
-      </div>
-      <div class="form-group">
-        <label>City</label>
-        <select><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option><option>Bamenda</option><option>Limbe</option></select>
-      </div>
-      <div class="form-group">
-        <label>Vehicle Type</label>
-        <select><option>Motorbike</option><option>Bicycle</option><option>Car</option></select>
-      </div>
+      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+237 6XX XXX XXX" /></div>
+      <div class="form-group"><label>City</label><select><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option><option>Bamenda</option><option>Limbe</option></select></div>
+      <div class="form-group"><label>Vehicle</label><select><option>Motorbike</option><option>Bicycle</option><option>Car</option></select></div>
       <button class="btn-full">Register as Rider</button>
     `,
     partner: `
-      <h2>Become a Partner 👨‍🍳</h2>
-      <p>List your restaurant or shop and reach thousands of customers</p>
-      <div class="form-group">
-        <label>Restaurant / Shop Name</label>
-        <input type="text" placeholder="e.g. Chez Mama Biya" />
-      </div>
-      <div class="form-group">
-        <label>Owner Name</label>
-        <input type="text" placeholder="Full name" />
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="tel" placeholder="+237 6XX XXX XXX" />
-      </div>
-      <div class="form-group">
-        <label>City</label>
-        <select><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option><option>Bamenda</option><option>Limbe</option></select>
-      </div>
-      <div class="form-group">
-        <label>Cuisine Type</label>
-        <select><option>Cameroonian</option><option>Grills & BBQ</option><option>Fast Food</option><option>Bakery</option><option>Grocery</option></select>
-      </div>
+      <h2>List Your Restaurant 👨‍🍳</h2>
+      <p>Reach thousands of customers and boost your sales</p>
+      <div class="form-group"><label>Restaurant / Shop Name</label><input type="text" placeholder="e.g. Chez Mama Biya" /></div>
+      <div class="form-group"><label>Owner Name</label><input type="text" placeholder="Full name" /></div>
+      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+237 6XX XXX XXX" /></div>
+      <div class="form-group"><label>City</label><select><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option><option>Bamenda</option><option>Limbe</option></select></div>
+      <div class="form-group"><label>Cuisine Type</label><select><option>Cameroonian</option><option>Grills & BBQ</option><option>Fast Food</option><option>Bakery</option><option>Grocery</option></select></div>
       <button class="btn-full">Register Restaurant</button>
     `,
     career: `
       <h2>Join Our Team 💼</h2>
       <p>Work with us and be part of something big in Cameroon</p>
       <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="Jean" />
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Mbarga" />
-        </div>
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean" /></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Mbarga" /></div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label>Position of Interest</label>
-        <select>
-          <option>Software Engineer</option>
-          <option>Operations Manager</option>
-          <option>Marketing</option>
-          <option>Customer Support</option>
-          <option>Data Analyst</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>LinkedIn / Portfolio URL</label>
-        <input type="url" placeholder="https://linkedin.com/in/..." />
-      </div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
+      <div class="form-group"><label>Position</label><select><option>Software Engineer</option><option>Operations Manager</option><option>Marketing</option><option>Customer Support</option><option>Data Analyst</option></select></div>
+      <div class="form-group"><label>LinkedIn / Portfolio</label><input type="url" placeholder="https://linkedin.com/in/..." /></div>
       <button class="btn-full">Apply Now</button>
     `,
   };
@@ -1135,23 +1250,14 @@
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-
   function closeModal() {
     document.getElementById('modal-overlay').classList.remove('open');
     document.body.style.overflow = '';
   }
-
   function closeModalOnBg(e) {
     if (e.target === document.getElementById('modal-overlay')) closeModal();
   }
-
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  /* ── Nav shadow on scroll ──────────────────────────────────────── */
-  window.addEventListener('scroll', () => {
-    document.querySelector('nav').style.boxShadow =
-      window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,0.1)' : 'none';
-  });
 </script>
 </body>
 </html>
