@@ -9,21 +9,10 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --yellow:   #FFBE00;
-      --yellow-dk:#E6A800;
-      --yellow-lt:#FFF3CC;
-      --green:    #00866A;
-      --green-dk: #006652;
-      --green-lt: #00A882;
-      --dark:     #141414;
-      --white:    #FFFFFF;
-      --gray:     #F7F8F6;
-      --gray2:    #EAEEE9;
-      --text:     #1E2019;
-      --muted:    #6B7280;
-      --radius:   16px;
-      --radius-lg:24px;
-      --radius-xl:36px;
+      --yellow:#FFBE00; --yellow-dk:#E6A800; --yellow-lt:#FFF3CC;
+      --green:#00866A; --green-dk:#006652; --green-lt:#00A882;
+      --dark:#141414; --white:#FFFFFF; --gray:#F7F8F6; --gray2:#EAEEE9;
+      --text:#1E2019; --muted:#6B7280; --radius:16px; --radius-lg:24px; --radius-xl:36px;
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; }
@@ -33,22 +22,13 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 6%; height: 72px;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      transition: box-shadow .3s;
+      background: rgba(255,255,255,0.97); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.07); transition: box-shadow .3s;
     }
     nav.scrolled { box-shadow: 0 2px 30px rgba(0,0,0,0.09); }
-    .nav-logo {
-      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.6rem;
-      color: var(--dark); text-decoration: none;
-      display: flex; align-items: center; gap: 4px;
-    }
+    .nav-logo { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.6rem; color: var(--dark); text-decoration: none; display: flex; align-items: center; gap: 4px; }
     .nav-logo .accent { color: var(--yellow); }
-    .nav-logo .dot {
-      width: 9px; height: 9px; background: var(--green);
-      border-radius: 50%; margin-left: 2px; margin-bottom: 12px;
-    }
+    .nav-logo .dot { width: 9px; height: 9px; background: var(--green); border-radius: 50%; margin-left: 2px; margin-bottom: 12px; }
     .nav-links { display: flex; align-items: center; gap: 2.2rem; }
     .nav-links a { text-decoration: none; font-weight: 500; color: var(--muted); font-size: 0.95rem; transition: color .2s; }
     .nav-links a:hover { color: var(--green); }
@@ -59,100 +39,39 @@
     .btn-pill:hover { background: var(--green-dk); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,134,106,0.3); }
 
     /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid; grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding-top: 72px;
-      background: var(--yellow);
-      overflow: hidden; position: relative;
-    }
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 72px; background: var(--yellow); overflow: hidden; position: relative; }
     .hero-left { padding: 80px 6% 80px 8%; z-index: 2; }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0,0,0,0.08); color: var(--dark);
-      border-radius: 50px; padding: 7px 16px;
-      font-size: 0.82rem; font-weight: 600; margin-bottom: 1.75rem;
-      animation: fadeDown .6s ease both;
-    }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.08); color: var(--dark); border-radius: 50px; padding: 7px 16px; font-size: 0.82rem; font-weight: 600; margin-bottom: 1.75rem; animation: fadeDown .6s ease both; }
     .blink { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; animation: blink 1.4s ease-in-out infinite; }
-    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-    @keyframes fadeDown { from{opacity:0;transform:translateY(-16px);} to{opacity:1;transform:none;} }
-    @keyframes slideUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:none;} }
-
-    .hero h1 {
-      font-family: 'Sora', sans-serif;
-      font-size: clamp(3rem, 4.5vw, 5rem);
-      font-weight: 800; line-height: 1.05;
-      color: var(--dark); letter-spacing: -0.03em;
-      margin-bottom: 1.25rem;
-      animation: slideUp .7s .1s cubic-bezier(.25,.46,.45,.94) both;
-    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:none} }
+    @keyframes slideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
+    .hero h1 { font-family: 'Sora', sans-serif; font-size: clamp(3rem,4.5vw,5rem); font-weight: 800; line-height: 1.05; color: var(--dark); letter-spacing: -0.03em; margin-bottom: 1.25rem; animation: slideUp .7s .1s cubic-bezier(.25,.46,.45,.94) both; }
     .hero h1 em { font-style: normal; color: var(--green-dk); }
-    .hero-sub {
-      font-size: 1.15rem; color: rgba(20,20,20,0.7); font-weight: 500; line-height: 1.65;
-      margin-bottom: 2.25rem;
-      animation: slideUp .7s .2s cubic-bezier(.25,.46,.45,.94) both;
-    }
-    .hero-search {
-      display: flex; align-items: center;
-      background: #fff; border-radius: 50px;
-      padding: 7px 7px 7px 20px; gap: 12px;
-      max-width: 480px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
-      animation: slideUp .7s .3s cubic-bezier(.25,.46,.45,.94) both;
-    }
+    .hero-sub { font-size: 1.15rem; color: rgba(20,20,20,0.7); font-weight: 500; line-height: 1.65; margin-bottom: 2.25rem; animation: slideUp .7s .2s cubic-bezier(.25,.46,.45,.94) both; }
+    .hero-search { display: flex; align-items: center; background: #fff; border-radius: 50px; padding: 7px 7px 7px 20px; gap: 12px; max-width: 480px; box-shadow: 0 12px 40px rgba(0,0,0,0.14); animation: slideUp .7s .3s cubic-bezier(.25,.46,.45,.94) both; }
     .hero-search .loc-icon { font-size: 1rem; color: var(--green); flex-shrink: 0; }
     .hero-search input { flex: 1; border: none; outline: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--text); }
     .hero-search input::placeholder { color: #b0b0b0; }
     .hero-search .btn-find { background: var(--green); color: #fff; border: none; border-radius: 50px; padding: 12px 22px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; transition: background .2s; }
     .hero-search .btn-find:hover { background: var(--green-dk); }
-    .hero-trust {
-      display: flex; align-items: center; gap: 20px; margin-top: 2rem; flex-wrap: wrap;
-      animation: slideUp .7s .4s cubic-bezier(.25,.46,.45,.94) both;
-    }
+    .hero-trust { display: flex; align-items: center; gap: 20px; margin-top: 2rem; flex-wrap: wrap; animation: slideUp .7s .4s cubic-bezier(.25,.46,.45,.94) both; }
     .trust-item { display: flex; align-items: center; gap: 7px; font-size: 0.88rem; font-weight: 600; color: rgba(20,20,20,0.65); }
     .trust-item .chk { color: var(--green-dk); }
-
-    /* Hero right */
-    .hero-right {
-      position: relative; height: 100%; min-height: 100vh;
-      overflow: hidden;
-      animation: slideUp .8s .2s cubic-bezier(.25,.46,.45,.94) both;
-    }
-    .hero-right::before {
-      content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 100px;
-      background: linear-gradient(to right, var(--yellow), transparent);
-      z-index: 2;
-    }
+    .hero-right { position: relative; height: 100%; min-height: 100vh; overflow: hidden; animation: slideUp .8s .2s cubic-bezier(.25,.46,.45,.94) both; }
+    .hero-right::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 100px; background: linear-gradient(to right, var(--yellow), transparent); z-index: 2; }
     .hero-img-main { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-    .hero-delivery-badge {
-      position: absolute; bottom: 70px; left: 10px;
-      background: #fff; border-radius: var(--radius);
-      padding: 14px 18px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
-      z-index: 4; display: flex; align-items: center; gap: 12px;
-      animation: badgeIn .8s .65s cubic-bezier(.25,.46,.45,.94) both, floatY 3s 1.4s ease-in-out infinite;
-    }
-    @keyframes badgeIn { from{opacity:0;transform:translateX(-30px);} to{opacity:1;transform:none;} }
-    @keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+    .hero-delivery-badge { position: absolute; bottom: 70px; left: 10px; background: #fff; border-radius: var(--radius); padding: 14px 18px; box-shadow: 0 16px 48px rgba(0,0,0,0.18); z-index: 4; display: flex; align-items: center; gap: 12px; animation: badgeIn .8s .65s cubic-bezier(.25,.46,.45,.94) both, floatY 3s 1.4s ease-in-out infinite; }
+    @keyframes badgeIn { from{opacity:0;transform:translateX(-30px)} to{opacity:1;transform:none} }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
     .badge-icon { font-size: 1.9rem; }
     .badge-text strong { display: block; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.95rem; }
     .badge-text span { font-size: 0.78rem; color: var(--muted); }
-    .hero-rating-badge {
-      position: absolute; top: 90px; right: 30px;
-      background: var(--green); color: #fff; border-radius: var(--radius);
-      padding: 12px 16px; text-align: center;
-      box-shadow: 0 12px 36px rgba(0,134,106,0.4);
-      z-index: 4;
-      animation: badgeIn2 .8s .8s cubic-bezier(.25,.46,.45,.94) both, floatY 3.5s 1.6s ease-in-out infinite;
-    }
-    @keyframes badgeIn2 { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:none;} }
+    .hero-rating-badge { position: absolute; top: 90px; right: 30px; background: var(--green); color: #fff; border-radius: var(--radius); padding: 12px 16px; text-align: center; box-shadow: 0 12px 36px rgba(0,134,106,0.4); z-index: 4; animation: badgeIn2 .8s .8s cubic-bezier(.25,.46,.45,.94) both, floatY 3.5s 1.6s ease-in-out infinite; }
+    @keyframes badgeIn2 { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
     .hero-rating-badge .stars { font-size: 1rem; margin-bottom: 2px; }
     .hero-rating-badge strong { display: block; font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.2rem; }
     .hero-rating-badge small { font-size: 0.72rem; opacity: 0.8; }
-
-    /* Wave */
     .wave-sep { height: 80px; background: var(--yellow); position: relative; overflow: hidden; }
     .wave-sep::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: var(--white); border-radius: 60% 60% 0 0 / 100% 100% 0 0; }
 
@@ -162,13 +81,7 @@
     .section-title { font-family: 'Sora', sans-serif; font-size: clamp(1.7rem,2.8vw,2.4rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 2rem; }
     .cat-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
     .cat-scroll::-webkit-scrollbar { display: none; }
-    .cat-pill {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--gray); border: 2px solid transparent;
-      border-radius: 50px; padding: 10px 20px;
-      cursor: pointer; white-space: nowrap;
-      font-weight: 600; font-size: 0.9rem; transition: all .22s; flex-shrink: 0;
-    }
+    .cat-pill { display: flex; align-items: center; gap: 10px; background: var(--gray); border: 2px solid transparent; border-radius: 50px; padding: 10px 20px; cursor: pointer; white-space: nowrap; font-weight: 600; font-size: 0.9rem; transition: all .22s; flex-shrink: 0; }
     .cat-pill img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
     .cat-pill:hover, .cat-pill.active { background: var(--yellow-lt); border-color: var(--yellow-dk); transform: translateY(-2px); }
     .cat-pill.active { background: var(--yellow); border-color: var(--yellow-dk); }
@@ -177,7 +90,7 @@
     .restaurants-section { padding: 60px 6%; background: var(--white); }
     .section-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem; }
     .see-all { background: none; border: none; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--green); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-    .rest-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .rest-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; }
     .rest-card { border-radius: var(--radius-lg); overflow: hidden; background: var(--white); border: 1px solid var(--gray2); cursor: pointer; transition: all .28s cubic-bezier(.25,.46,.45,.94); }
     .rest-card:hover { transform: translateY(-7px); box-shadow: 0 20px 48px rgba(0,0,0,0.11); border-color: transparent; }
     .rest-img-wrap { overflow: hidden; position: relative; }
@@ -195,7 +108,7 @@
 
     /* ── DISHES ── */
     .dishes-section { padding: 70px 6%; background: var(--gray); }
-    .dishes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 2rem; }
+    .dishes-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; margin-top: 2rem; }
     .dish-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: all .28s cubic-bezier(.25,.46,.45,.94); border: 1px solid transparent; }
     .dish-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.1); }
     .dish-img-wrap { position: relative; overflow: hidden; }
@@ -231,7 +144,7 @@
     .roles-section { padding: 80px 6%; background: var(--dark); color: #fff; }
     .roles-section .section-label { color: var(--yellow); }
     .roles-section .section-title { color: #fff; margin-bottom: 3rem; }
-    .roles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .roles-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
     .role-card { border-radius: var(--radius-lg); overflow: hidden; position: relative; aspect-ratio: 3/4; cursor: pointer; transition: transform .3s ease; }
     .role-card:hover { transform: translateY(-8px); }
     .role-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
@@ -270,19 +183,21 @@
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(6px); }
     .modal-overlay.open { display: flex; }
     .modal { background: #fff; border-radius: var(--radius-xl); padding: 2.75rem; width: 100%; max-width: 440px; position: relative; animation: modalPop .35s cubic-bezier(.25,.46,.45,.94) both; max-height: 90vh; overflow-y: auto; }
-    @keyframes modalPop { from{opacity:0;transform:scale(.9) translateY(20px);} to{opacity:1;transform:none;} }
+    @keyframes modalPop { from{opacity:0;transform:scale(.9) translateY(20px)} to{opacity:1;transform:none} }
     .modal-close { position: absolute; top: 18px; right: 20px; background: var(--gray); border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 1rem; cursor: pointer; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: background .2s; }
     .modal-close:hover { background: var(--gray2); }
-    .modal h2 { font-family: 'Sora', sans-serif; font-size: 1.65rem; font-weight: 800; margin-bottom: .4rem; letter-spacing: -0.02em; }
-    .modal > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.75rem; }
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; font-weight: 600; font-size: 0.83rem; margin-bottom: 6px; }
-    .form-group input, .form-group select { width: 100%; border: 2px solid var(--gray2); border-radius: 12px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color .2s; background: var(--gray); }
-    .form-group input:focus, .form-group select:focus { border-color: var(--green); background: #fff; }
-    .form-row { display: flex; gap: 10px; }
-    .form-row .form-group { flex: 1; }
-    .btn-full { width: 100%; background: var(--green); color: #fff; border: none; border-radius: 50px; padding: 15px; font-weight: 700; font-size: 1rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s; margin-top: .5rem; }
-    .btn-full:hover { background: var(--green-dk); }
+    /* Modal content styles (populated by modal.js) */
+    #modal-content h2 { font-family: 'Sora', sans-serif; font-size: 1.65rem; font-weight: 800; margin-bottom: .4rem; letter-spacing: -0.02em; }
+    #modal-content > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.75rem; }
+    .mf-group { margin-bottom: 1rem; }
+    .mf-group label { display: block; font-weight: 600; font-size: 0.83rem; margin-bottom: 6px; }
+    .mf-group input, .mf-group select { width: 100%; border: 2px solid var(--gray2); border-radius: 12px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color .2s; background: var(--gray); }
+    .mf-group input:focus, .mf-group select:focus { border-color: var(--green); background: #fff; }
+    .mf-row { display: flex; gap: 10px; }
+    .mf-row .mf-group { flex: 1; }
+    .mf-btn { width: 100%; background: var(--green); color: #fff; border: none; border-radius: 50px; padding: 15px; font-weight: 700; font-size: 1rem; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s; margin-top: .5rem; }
+    .mf-btn:hover:not(:disabled) { background: var(--green-dk); }
+    .mf-btn:disabled { opacity: .6; cursor: default; }
     .modal-switch { text-align: center; margin-top: 1.2rem; font-size: 0.88rem; color: var(--muted); }
     .modal-switch a { color: var(--green); font-weight: 600; cursor: pointer; }
     .modal-divider { display: flex; align-items: center; gap: 12px; margin: 1.25rem 0; color: var(--muted); font-size: 0.82rem; }
@@ -290,29 +205,18 @@
     .btn-social { width: 100%; background: var(--gray); color: var(--text); border: 2px solid var(--gray2); border-radius: 50px; padding: 13px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: .75rem; }
     .btn-social:hover { border-color: var(--green); background: #fff; }
 
-    /* ── SCROLL REVEAL ── */
+    /* ── REVEAL ── */
     .reveal { opacity: 0; transform: translateY(36px); transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94); }
     .reveal.visible { opacity: 1; transform: none; }
     .reveal-left { opacity: 0; transform: translateX(-36px); transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94); }
     .reveal-left.visible { opacity: 1; transform: none; }
     .reveal-right { opacity: 0; transform: translateX(36px); transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94); }
     .reveal-right.visible { opacity: 1; transform: none; }
-    .delay-1 { transition-delay: .1s; }
-    .delay-2 { transition-delay: .2s; }
-    .delay-3 { transition-delay: .3s; }
-    .delay-4 { transition-delay: .4s; }
+    .delay-1 { transition-delay: .1s; } .delay-2 { transition-delay: .2s; } .delay-3 { transition-delay: .3s; } .delay-4 { transition-delay: .4s; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 1100px) { .rest-grid, .dishes-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-right { height: 380px; min-height: auto; }
-      .how-section { grid-template-columns: 1fr; }
-      .how-right { display: none; }
-      .roles-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-      .nav-links { display: none; }
-    }
+    @media (max-width: 1100px) { .rest-grid, .dishes-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; min-height: auto; } .hero-right { height: 380px; min-height: auto; } .how-section { grid-template-columns: 1fr; } .how-right { display: none; } .roles-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; } .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } .nav-links { display: none; } }
     @media (max-width: 640px) { .rest-grid, .dishes-grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -327,7 +231,8 @@
     <a href="#roles">Partners</a>
     <a href="#">Cities</a>
   </div>
-  <div class="nav-cta">
+  <!-- Auth buttons injected here by auth.js -->
+  <div class="nav-cta" id="nav-cta">
     <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
     <button class="btn-pill" onclick="openModal('register')">Order Now</button>
   </div>
@@ -342,7 +247,7 @@
     <div class="hero-search">
       <span class="loc-icon">📍</span>
       <input type="text" placeholder="Enter your delivery address…" />
-      <button class="btn-find">Find food</button>
+      <button class="btn-find" onclick="location.href='restaurants.html'">Find food</button>
     </div>
     <div class="hero-trust">
       <div class="trust-item"><span class="chk">✓</span>Free delivery on first order</div>
@@ -351,7 +256,6 @@
     </div>
   </div>
   <div class="hero-right">
-    <!-- Poulet DG — real Cameroonian dish from africanbites.com -->
     <img class="hero-img-main"
          src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-1.jpg"
          alt="Poulet DG — Cameroonian chicken with plantains" />
@@ -376,30 +280,14 @@
   <p class="section-label">Browse categories</p>
   <h2 class="section-title">What are you craving?</h2>
   <div class="cat-scroll">
-    <div class="cat-pill active" onclick="toggleCat(this)">
-      <img src="https://www.africanbites.com/wp-content/uploads/2021/05/Ndole-1.jpg" alt="All" />All
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-1.jpg" alt="Cameroonian" />Cameroonian
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://www.africanbites.com/wp-content/uploads/2026/01/Kondres-Spicy-Plantains-3.jpg" alt="Grills" />Grills &amp; BBQ
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://www.africanbites.com/wp-content/uploads/2026/01/Achu-Soup.jpg" alt="Soups" />Soups
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://www.africanbites.com/wp-content/uploads/2012/12/IMG_1287.jpg" alt="Plantains" />Plantains
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://images.unsplash.com/photo-1621696685827-b9bbd7b8f6e6?w=56&q=80" alt="Drinks" />Drinks
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=56&q=80" alt="Groceries" />Groceries
-    </div>
-    <div class="cat-pill" onclick="toggleCat(this)">
-      <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=56&q=80" alt="Bakery" />Bakery
-    </div>
+    <div class="cat-pill active" onclick="toggleCat(this)"><img src="https://www.africanbites.com/wp-content/uploads/2021/05/Ndole-1.jpg" alt="All"/>All</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-1.jpg" alt="Cameroonian"/>Cameroonian</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://www.africanbites.com/wp-content/uploads/2026/01/Kondres-Spicy-Plantains-3.jpg" alt="Grills"/>Grills &amp; BBQ</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://www.africanbites.com/wp-content/uploads/2026/01/Achu-Soup.jpg" alt="Soups"/>Soups</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://www.africanbites.com/wp-content/uploads/2012/12/IMG_1287.jpg" alt="Plantains"/>Plantains</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://images.unsplash.com/photo-1621696685827-b9bbd7b8f6e6?w=56&q=80" alt="Drinks"/>Drinks</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=56&q=80" alt="Groceries"/>Groceries</div>
+    <div class="cat-pill" onclick="toggleCat(this)"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=56&q=80" alt="Bakery"/>Bakery</div>
   </div>
 </section>
 
@@ -407,52 +295,24 @@
 <section class="restaurants-section">
   <div class="section-row reveal">
     <div><p class="section-label">Near you</p><h2 class="section-title">Top restaurants</h2></div>
-    <button class="see-all">See all</button>
+    <button class="see-all" onclick="location.href='restaurants.html'">See all</button>
   </div>
   <div class="rest-grid">
-    <div class="rest-card reveal delay-1">
-      <div class="rest-img-wrap">
-        <img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2021/05/Ndole-1.jpg" alt="Ndolé" />
-        <span class="rest-tag">🔥 Popular</span>
-      </div>
-      <div class="rest-info">
-        <h4>Chez Mama Biya</h4>
-        <div class="rest-meta"><span class="rating"><span class="star">★</span>4.8</span><span>·</span><span>Cameroonian</span></div>
-        <div class="rest-price-row"><span class="rest-deliver">Free delivery</span><span class="rest-min">20–30 min</span></div>
-      </div>
+    <div class="rest-card reveal delay-1" onclick="location.href='restaurant.html?id=1'">
+      <div class="rest-img-wrap"><img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2021/05/Ndole-1.jpg" alt="Ndolé"/><span class="rest-tag">🔥 Popular</span></div>
+      <div class="rest-info"><h4>Chez Mama Biya</h4><div class="rest-meta"><span class="rating"><span class="star">★</span>4.8</span><span>·</span><span>Cameroonian</span></div><div class="rest-price-row"><span class="rest-deliver">Free delivery</span><span class="rest-min">20–30 min</span></div></div>
     </div>
-    <div class="rest-card reveal delay-2">
-      <div class="rest-img-wrap">
-        <img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-2.jpg" alt="Poulet DG" />
-        <span class="rest-tag">⚡ Fast</span>
-      </div>
-      <div class="rest-info">
-        <h4>Le Grill du Quartier</h4>
-        <div class="rest-meta"><span class="rating"><span class="star">★</span>4.6</span><span>·</span><span>Grills &amp; BBQ</span></div>
-        <div class="rest-price-row"><span class="rest-deliver">500 XAF delivery</span><span class="rest-min">25–40 min</span></div>
-      </div>
+    <div class="rest-card reveal delay-2" onclick="location.href='restaurant.html?id=2'">
+      <div class="rest-img-wrap"><img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-2.jpg" alt="Poulet DG"/><span class="rest-tag">⚡ Fast</span></div>
+      <div class="rest-info"><h4>Le Grill du Quartier</h4><div class="rest-meta"><span class="rating"><span class="star">★</span>4.6</span><span>·</span><span>Grills &amp; BBQ</span></div><div class="rest-price-row"><span class="rest-deliver">500 XAF delivery</span><span class="rest-min">25–40 min</span></div></div>
     </div>
-    <div class="rest-card reveal delay-3">
-      <div class="rest-img-wrap">
-        <img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2026/01/Achu-Soup.jpg" alt="Achu Soup" />
-        <span class="rest-tag">🆕 New</span>
-      </div>
-      <div class="rest-info">
-        <h4>Saveur du Mfoundi</h4>
-        <div class="rest-meta"><span class="rating"><span class="star">★</span>4.9</span><span>·</span><span>Traditional</span></div>
-        <div class="rest-price-row"><span class="rest-deliver">Free delivery</span><span class="rest-min">30–45 min</span></div>
-      </div>
+    <div class="rest-card reveal delay-3" onclick="location.href='restaurant.html?id=3'">
+      <div class="rest-img-wrap"><img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2026/01/Achu-Soup.jpg" alt="Achu Soup"/><span class="rest-tag">🆕 New</span></div>
+      <div class="rest-info"><h4>Saveur du Mfoundi</h4><div class="rest-meta"><span class="rating"><span class="star">★</span>4.9</span><span>·</span><span>Traditional</span></div><div class="rest-price-row"><span class="rest-deliver">Free delivery</span><span class="rest-min">30–45 min</span></div></div>
     </div>
-    <div class="rest-card reveal delay-4">
-      <div class="rest-img-wrap">
-        <img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2025/08/Eru-Soup-3.jpg" alt="Eru Soup" />
-        <span class="rest-tag">💛 Top rated</span>
-      </div>
-      <div class="rest-info">
-        <h4>Baobab Kitchen</h4>
-        <div class="rest-meta"><span class="rating"><span class="star">★</span>4.7</span><span>·</span><span>African Cuisine</span></div>
-        <div class="rest-price-row"><span class="rest-deliver">Free delivery</span><span class="rest-min">15–25 min</span></div>
-      </div>
+    <div class="rest-card reveal delay-4" onclick="location.href='restaurant.html?id=4'">
+      <div class="rest-img-wrap"><img class="rest-img" src="https://www.africanbites.com/wp-content/uploads/2025/08/Eru-Soup-3.jpg" alt="Eru Soup"/><span class="rest-tag">💛 Top rated</span></div>
+      <div class="rest-info"><h4>Baobab Kitchen</h4><div class="rest-meta"><span class="rating"><span class="star">★</span>4.7</span><span>·</span><span>African Cuisine</span></div><div class="rest-price-row"><span class="rest-deliver">Free delivery</span><span class="rest-min">15–25 min</span></div></div>
     </div>
   </div>
 </section>
@@ -461,106 +321,17 @@
 <section class="dishes-section" id="dishes">
   <div class="section-row reveal">
     <div><p class="section-label">Favourites</p><h2 class="section-title">Popular Cameroonian dishes</h2></div>
-    <button class="see-all">See all</button>
+    <button class="see-all" onclick="location.href='restaurants.html'">See all</button>
   </div>
   <div class="dishes-grid">
-
-    <div class="dish-card reveal delay-1">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2021/05/Ndole-1.jpg" alt="Ndolé" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Ndolé</h4>
-        <p>Bitter leaf with groundnuts &amp; prawns</p>
-        <div class="dish-footer"><span class="dish-price">From 1,200 XAF</span><span class="dish-rest">Chez Mama Biya</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-2">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2025/08/Eru-Soup-3.jpg" alt="Eru" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Eru &amp; Water Fufu</h4>
-        <p>Wild forest vegetable with cassava fufu</p>
-        <div class="dish-footer"><span class="dish-price">From 1,500 XAF</span><span class="dish-rest">Baobab Kitchen</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-3">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-1.jpg" alt="Poulet DG" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Poulet DG</h4>
-        <p>Directeur Général chicken with plantains</p>
-        <div class="dish-footer"><span class="dish-price">From 2,500 XAF</span><span class="dish-rest">Le Grill du Quartier</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-4">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2026/01/Achu-Soup.jpg" alt="Achu Soup" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Achu Soup</h4>
-        <p>Pounded cocoyam &amp; yellow palm soup</p>
-        <div class="dish-footer"><span class="dish-price">From 1,000 XAF</span><span class="dish-rest">Saveur du Mfoundi</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-1">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2013/12/IMG_9891-2.jpg" alt="Ekwang" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Ekwang</h4>
-        <p>Grated cocoyam wrapped in leaves</p>
-        <div class="dish-footer"><span class="dish-price">From 1,800 XAF</span><span class="dish-rest">Chez Mama Biya</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-2">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2012/12/IMG_1287.jpg" alt="Sese Plantains" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Sese Plantains</h4>
-        <p>One-pot plantain porridge with meat</p>
-        <div class="dish-footer"><span class="dish-price">From 900 XAF</span><span class="dish-rest">Saveur du Mfoundi</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-3">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2026/01/Kondres-Spicy-Plantains-3.jpg" alt="Kondres" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Kondres</h4>
-        <p>Spicy stewed plantains with goat meat</p>
-        <div class="dish-footer"><span class="dish-price">From 1,400 XAF</span><span class="dish-rest">Baobab Kitchen</span></div>
-      </div>
-    </div>
-
-    <div class="dish-card reveal delay-4">
-      <div class="dish-img-wrap">
-        <img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2012/11/IMG_5428.jpg" alt="Ndolé with Plantains" />
-        <button class="dish-add">+</button>
-      </div>
-      <div class="dish-body">
-        <h4>Ndolé &amp; Plantains</h4>
-        <p>National dish with boiled ripe plantains</p>
-        <div class="dish-footer"><span class="dish-price">From 1,300 XAF</span><span class="dish-rest">Le Grill du Quartier</span></div>
-      </div>
-    </div>
-
+    <div class="dish-card reveal delay-1"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2021/05/Ndole-1.jpg" alt="Ndolé"/><button class="dish-add" onclick="handleAddToCart(event,'Ndolé',1200)">+</button></div><div class="dish-body"><h4>Ndolé</h4><p>Bitter leaf with groundnuts &amp; prawns</p><div class="dish-footer"><span class="dish-price">From 1,200 XAF</span><span class="dish-rest">Chez Mama Biya</span></div></div></div>
+    <div class="dish-card reveal delay-2"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2025/08/Eru-Soup-3.jpg" alt="Eru"/><button class="dish-add" onclick="handleAddToCart(event,'Eru & Water Fufu',1500)">+</button></div><div class="dish-body"><h4>Eru &amp; Water Fufu</h4><p>Wild forest vegetable with cassava fufu</p><div class="dish-footer"><span class="dish-price">From 1,500 XAF</span><span class="dish-rest">Baobab Kitchen</span></div></div></div>
+    <div class="dish-card reveal delay-3"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-1.jpg" alt="Poulet DG"/><button class="dish-add" onclick="handleAddToCart(event,'Poulet DG',2500)">+</button></div><div class="dish-body"><h4>Poulet DG</h4><p>Directeur Général chicken with plantains</p><div class="dish-footer"><span class="dish-price">From 2,500 XAF</span><span class="dish-rest">Le Grill du Quartier</span></div></div></div>
+    <div class="dish-card reveal delay-4"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2026/01/Achu-Soup.jpg" alt="Achu Soup"/><button class="dish-add" onclick="handleAddToCart(event,'Achu Soup',1000)">+</button></div><div class="dish-body"><h4>Achu Soup</h4><p>Pounded cocoyam &amp; yellow palm soup</p><div class="dish-footer"><span class="dish-price">From 1,000 XAF</span><span class="dish-rest">Saveur du Mfoundi</span></div></div></div>
+    <div class="dish-card reveal delay-1"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2013/12/IMG_9891-2.jpg" alt="Ekwang"/><button class="dish-add" onclick="handleAddToCart(event,'Ekwang',1800)">+</button></div><div class="dish-body"><h4>Ekwang</h4><p>Grated cocoyam wrapped in leaves</p><div class="dish-footer"><span class="dish-price">From 1,800 XAF</span><span class="dish-rest">Chez Mama Biya</span></div></div></div>
+    <div class="dish-card reveal delay-2"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2012/12/IMG_1287.jpg" alt="Sese Plantains"/><button class="dish-add" onclick="handleAddToCart(event,'Sese Plantains',900)">+</button></div><div class="dish-body"><h4>Sese Plantains</h4><p>One-pot plantain porridge with meat</p><div class="dish-footer"><span class="dish-price">From 900 XAF</span><span class="dish-rest">Saveur du Mfoundi</span></div></div></div>
+    <div class="dish-card reveal delay-3"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2026/01/Kondres-Spicy-Plantains-3.jpg" alt="Kondres"/><button class="dish-add" onclick="handleAddToCart(event,'Kondres',1400)">+</button></div><div class="dish-body"><h4>Kondres</h4><p>Spicy stewed plantains with goat meat</p><div class="dish-footer"><span class="dish-price">From 1,400 XAF</span><span class="dish-rest">Baobab Kitchen</span></div></div></div>
+    <div class="dish-card reveal delay-4"><div class="dish-img-wrap"><img class="dish-img" src="https://www.africanbites.com/wp-content/uploads/2012/11/IMG_5428.jpg" alt="Ndolé with Plantains"/><button class="dish-add" onclick="handleAddToCart(event,'Ndolé & Plantains',1300)">+</button></div><div class="dish-body"><h4>Ndolé &amp; Plantains</h4><p>National dish with boiled ripe plantains</p><div class="dish-footer"><span class="dish-price">From 1,300 XAF</span><span class="dish-rest">Le Grill du Quartier</span></div></div></div>
   </div>
 </section>
 
@@ -571,43 +342,22 @@
     <h2 class="section-title reveal delay-1">From your screen<br/>to your door</h2>
     <p class="reveal delay-2">In just a few taps, your favourite Cameroonian meal is on its way. Our riders know every street in Yaoundé and Douala.</p>
     <div class="steps-list">
-      <div class="step-item reveal delay-1">
-        <div class="step-num">1</div>
-        <div class="step-text">
-          <strong>Enter your address</strong>
-          <span>Tell us where you are and we'll show the best nearby restaurants and shops.</span>
-        </div>
-      </div>
-      <div class="step-item reveal delay-2">
-        <div class="step-num">2</div>
-        <div class="step-text">
-          <strong>Choose your meal</strong>
-          <span>Browse menus, customise your order and pay securely in seconds.</span>
-        </div>
-      </div>
-      <div class="step-item reveal delay-3">
-        <div class="step-num">3</div>
-        <div class="step-text">
-          <strong>Enjoy fast delivery</strong>
-          <span>Track your rider live on the map. Sit back and get ready to eat!</span>
-        </div>
-      </div>
+      <div class="step-item reveal delay-1"><div class="step-num">1</div><div class="step-text"><strong>Enter your address</strong><span>Tell us where you are and we'll show the best nearby restaurants and shops.</span></div></div>
+      <div class="step-item reveal delay-2"><div class="step-num">2</div><div class="step-text"><strong>Choose your meal</strong><span>Browse menus, customise your order and pay securely in seconds.</span></div></div>
+      <div class="step-item reveal delay-3"><div class="step-num">3</div><div class="step-text"><strong>Enjoy fast delivery</strong><span>Track your rider live on the map. Sit back and get ready to eat!</span></div></div>
     </div>
   </div>
   <div class="how-right reveal-right">
     <img src="https://www.africanbites.com/wp-content/uploads/2025/05/Poulet-DG-2.jpg" alt="Poulet DG close up" />
     <div class="overlay-card">
       <span class="oc-icon">🚴</span>
-      <div class="oc-text">
-        <strong>Jean-Pierre is on the way</strong>
-        <span>Your order is 2.3 km away</span>
-      </div>
+      <div class="oc-text"><strong>Jean-Pierre is on the way</strong><span>Your order is 2.3 km away</span></div>
       <span class="oc-badge">Live</span>
     </div>
   </div>
 </section>
 
-<!-- ── ROLES / PARTNERS ── -->
+<!-- ── ROLES ── -->
 <section class="roles-section" id="roles">
   <p class="section-label reveal">Grow with us</p>
   <h2 class="section-title reveal delay-1">Join the ChopFast family</h2>
@@ -615,32 +365,17 @@
     <div class="role-card reveal delay-1">
       <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=85&auto=format&fit=crop" alt="Rider" />
       <div class="role-overlay"></div>
-      <div class="role-body">
-        <span class="role-chip">🚴 Rider</span>
-        <h3>Become a Rider</h3>
-        <p>Earn on your schedule. Flexibility, freedom and competitive pay across Cameroon.</p>
-        <button class="btn-role" onclick="openModal('rider')">Register now</button>
-      </div>
+      <div class="role-body"><span class="role-chip">🚴 Rider</span><h3>Become a Rider</h3><p>Earn on your schedule. Flexibility, freedom and competitive pay across Cameroon.</p><button class="btn-role" onclick="openModal('rider')">Register now</button></div>
     </div>
     <div class="role-card reveal delay-2">
       <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=85&auto=format&fit=crop" alt="Restaurant Partner" />
       <div class="role-overlay"></div>
-      <div class="role-body">
-        <span class="role-chip">👨‍🍳 Partner</span>
-        <h3>List Your Restaurant</h3>
-        <p>Reach thousands of customers daily. Our platform grows your sales — fast.</p>
-        <button class="btn-role" onclick="openModal('partner')">Register now</button>
-      </div>
+      <div class="role-body"><span class="role-chip">👨‍🍳 Partner</span><h3>List Your Restaurant</h3><p>Reach thousands of customers daily. Our platform grows your sales — fast.</p><button class="btn-role" onclick="openModal('partner')">Register now</button></div>
     </div>
     <div class="role-card reveal delay-3">
       <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=85&auto=format&fit=crop" alt="Careers" />
       <div class="role-overlay"></div>
-      <div class="role-body">
-        <span class="role-chip">💼 Careers</span>
-        <h3>Work With Us</h3>
-        <p>Ambitious, humble, collaborative? We're building something big in Cameroon.</p>
-        <button class="btn-role" onclick="openModal('career')">Apply now</button>
-      </div>
+      <div class="role-body"><span class="role-chip">💼 Careers</span><h3>Work With Us</h3><p>Ambitious, humble, collaborative? We're building something big in Cameroon.</p><button class="btn-role" onclick="openModal('career')">Apply now</button></div>
     </div>
   </div>
 </section>
@@ -654,41 +389,13 @@
       <h4>Let's do it together</h4>
       <p>ChopFast connects Cameroonians with their favourite local meals, groceries, and more — delivered fast to your door.</p>
       <div class="social-links">
-        <a class="social-link" href="#">📘</a>
-        <a class="social-link" href="#">📸</a>
-        <a class="social-link" href="#">🐦</a>
-        <a class="social-link" href="#">▶️</a>
+        <a class="social-link" href="#">📘</a><a class="social-link" href="#">📸</a>
+        <a class="social-link" href="#">🐦</a><a class="social-link" href="#">▶️</a>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">About us</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Sustainability</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>For Business</h4>
-      <ul>
-        <li><a href="#">Become a partner</a></li>
-        <li><a href="#">Become a rider</a></li>
-        <li><a href="#">Advertise with us</a></li>
-        <li><a href="#">ChopFast for Work</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="#">Help Centre</a></li>
-        <li><a href="#">Contact us</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Cookie Policy</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Blog</a></li><li><a href="#">Sustainability</a></li></ul></div>
+    <div class="footer-col"><h4>For Business</h4><ul><li><a href="#" onclick="openModal('partner');return false">Become a partner</a></li><li><a href="#" onclick="openModal('rider');return false">Become a rider</a></li><li><a href="#">Advertise with us</a></li><li><a href="#">ChopFast for Work</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Help Centre</a></li><li><a href="#">Contact us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <p>© 2025 ChopFast. All rights reserved. Made with ❤️ in Cameroon 🇨🇲</p>
@@ -696,7 +403,7 @@
   </div>
 </footer>
 
-<!-- ── MODAL ── -->
+<!-- ── MODAL OVERLAY ── -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
   <div class="modal" id="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -704,96 +411,42 @@
   </div>
 </div>
 
+<!-- ── AUTH + MODAL SCRIPTS ── -->
+<script src="js/auth.js"></script>
+<script src="js/modal.js"></script>
 <script>
+  /* Scroll reveal */
   const io = new IntersectionObserver(
-    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
-    { threshold: 0.1 }
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    }), { threshold: 0.1 }
   );
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => io.observe(el));
 
+  /* Nav shadow */
   window.addEventListener('scroll', () => {
     document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
   });
 
+  /* Category pill toggle */
   function toggleCat(el) {
     document.querySelectorAll('.cat-pill').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
   }
 
-  const MODAL_CONTENT = {
-    login: `
-      <h2>Welcome back 👋</h2>
-      <p>Sign in to your ChopFast account</p>
-      <button class="btn-social">🍎&nbsp; Continue with Apple</button>
-      <button class="btn-social">🌐&nbsp; Continue with Google</button>
-      <div class="modal-divider">or continue with email</div>
-      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••" /></div>
-      <button class="btn-full">Sign In</button>
-      <div class="modal-switch">Don't have an account? <a onclick="openModal('register')">Sign up</a></div>
-    `,
-    register: `
-      <h2>Create account 🎉</h2>
-      <p>Join ChopFast and start ordering local food</p>
-      <div class="form-row">
-        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean" /></div>
-        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Mbarga" /></div>
-      </div>
-      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
-      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+237 6XX XXX XXX" /></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="Min 8 characters" /></div>
-      <button class="btn-full">Create Account</button>
-      <div class="modal-switch">Already have an account? <a onclick="openModal('login')">Sign in</a></div>
-    `,
-    rider: `
-      <h2>Become a Rider 🚴</h2>
-      <p>Enjoy flexibility and earn competitively with ChopFast</p>
-      <div class="form-row">
-        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean" /></div>
-        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Mbarga" /></div>
-      </div>
-      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+237 6XX XXX XXX" /></div>
-      <div class="form-group"><label>City</label><select><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option><option>Bamenda</option><option>Limbe</option></select></div>
-      <div class="form-group"><label>Vehicle</label><select><option>Motorbike</option><option>Bicycle</option><option>Car</option></select></div>
-      <button class="btn-full">Register as Rider</button>
-    `,
-    partner: `
-      <h2>List Your Restaurant 👨‍🍳</h2>
-      <p>Reach thousands of customers and boost your sales</p>
-      <div class="form-group"><label>Restaurant / Shop Name</label><input type="text" placeholder="e.g. Chez Mama Biya" /></div>
-      <div class="form-group"><label>Owner Name</label><input type="text" placeholder="Full name" /></div>
-      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+237 6XX XXX XXX" /></div>
-      <div class="form-group"><label>City</label><select><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option><option>Bamenda</option><option>Limbe</option></select></div>
-      <div class="form-group"><label>Cuisine Type</label><select><option>Cameroonian</option><option>Grills & BBQ</option><option>Fast Food</option><option>Bakery</option><option>Grocery</option></select></div>
-      <button class="btn-full">Register Restaurant</button>
-    `,
-    career: `
-      <h2>Join Our Team 💼</h2>
-      <p>Work with us and build something big in Cameroon</p>
-      <div class="form-row">
-        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean" /></div>
-        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Mbarga" /></div>
-      </div>
-      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" /></div>
-      <div class="form-group"><label>Position</label><select><option>Software Engineer</option><option>Operations Manager</option><option>Marketing</option><option>Customer Support</option><option>Data Analyst</option></select></div>
-      <div class="form-group"><label>LinkedIn / Portfolio</label><input type="url" placeholder="https://linkedin.com/in/..." /></div>
-      <button class="btn-full">Apply Now</button>
-    `,
-  };
+  /* Add to cart — requires login */
+  function handleAddToCart(e, name, price) {
+    e.stopPropagation();
+    if (!Auth.isLoggedIn()) {
+      showToast('Please sign in to add items to your cart 🔒');
+      setTimeout(() => openModal('login'), 600);
+      return;
+    }
+    showToast(`${name} added to cart! 🛒`);
+  }
 
-  function openModal(type) {
-    document.getElementById('modal-content').innerHTML = MODAL_CONTENT[type] || '';
-    document.getElementById('modal-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function closeModalOnBg(e) {
-    if (e.target === document.getElementById('modal-overlay')) closeModal();
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  /* Update nav on page load based on saved session */
+  updateNavAuth();
 </script>
 </body>
 </html>

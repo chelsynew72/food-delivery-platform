@@ -13,9 +13,26 @@ async function bootstrap(): Promise<void> {
 
   // Security
   app.use(helmet());
+
+  // Parse allowed origins from comma-separated env variable
+  const rawOrigins = config.get<string>('app.corsOrigin') ?? '';
+  const allowedOrigins = rawOrigins
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin: config.get<string>('app.corsOrigin'),
+    origin: (requestOrigin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, curl)
+      if (!requestOrigin) return callback(null, true);
+      if (allowedOrigins.includes(requestOrigin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS: origin ${requestOrigin} not allowed`), false);
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   // Global prefix
